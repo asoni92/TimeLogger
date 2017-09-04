@@ -15,15 +15,18 @@ module.exports = function (app) {
 
 	controller.processRequest = function (req, res, next) {
 		console.log("---------------");
-		console.log(req);
 		console.log(req.body)
-		if(req.body == null || req.body == '' || req.body.trim().length == 0) {
+		var teamDomain = req.body.team_domain;
+		var username = req.body.user_name;
+		var command = req.body.text;
+		if(command == null || command == '' || command.trim().length == 0) {
 			//Handle the unwanted exception
 			res.send("No Data Found");
 			return;
+		} else {
+			res.send("You send ", command);
+			return;
 		}
-		var command = req.body;
-		var username = null;
 		var code = null;
 		var description = null;
 		var option = null;
