@@ -134,6 +134,7 @@ module.exports = function(app) {
 			if(code == null || code == '' || code.trim().length == 0) {
 				return res.send(getErrorMessage('No Code Specified.'));
 			} else {
+				console.log("Inside Code");
 				deleteLog(req, res, code);
 			}
 		} else if(option.toLowerCase() == 'help') { 
@@ -211,6 +212,18 @@ module.exports = function(app) {
 		return res;
 	}
 	
+	getRemoveSuccessMsg = function(data) {
+		var res = { "attachments" : [{
+		 	"fallback" : "", "text" : "Record Successfully Deleted",
+		 	"fields" : [
+		 	    {"title" : "Code: "+data.code, "value" : "", "short" : true},
+		 		{"title" : "Time Log: "+moment.utc(data.time*1000).format('HH:mm:ss'), "value" : "", "short" : true},
+		 		{"title" : "Description: "+data.description, "value" : "", "short" : false},
+		 		], "color" : "good"
+		 }] };
+		return res;
+	}
+	
 	function addLog(req, res, workLogTime, description, username) {
 		try {
 		var now = moment().unix();
@@ -242,27 +255,31 @@ module.exports = function(app) {
 				code: code,
 				active: 1
 			}).fetch().then(function (result) {
+				console.log("-----------------------")
+				console.log(result)
 				if (result) {
 					result.save({
 						active: 0,
-						dateModified: 0
+						dateModified: now
 					}, {
 						method: 'update',
 						patch: true,
 						require: false
 					}).then(function (result) {
-						
+						var removedWork = result.toJSON();
+						var successMsg = getRemoveSuccessMsg(removedWork);
+						return res.send(successMsg);
 					}).catch(function (err) {
-						
+						return res.send(getErrorMessage('Error occurred in deleting the work log entry.'));
 					})
 				} else {
 					return res.send(getErrorMessage('No entry found with the given code.'));
 				}
 			}).catch(function (err) {
-				return res.send(getErrorMessage('Error is logging hours for your work.'));
+				return res.send(getErrorMessage('Error occurred in deleting the work log entry.'));
 			});
 		} catch(ex) {
-			return res.send(getErrorMessage('Error is logging hours for your work.'));
+			return res.send(getErrorMessage('Error occurred in deleting the work log entry.'));
 		}		
 		
 	}
