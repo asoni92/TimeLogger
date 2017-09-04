@@ -124,10 +124,13 @@ module.exports = function(app) {
 	function getDescriptionFromRequest(data) {
 		var description = null;
 		if(data == null || data == '' || data.trim().length == 0) {
+			console.log("Nulllllllll")
 			return null;
 		} else {
 			data = data.trim();
+			console.log("Data is "+data);
 			if(data.startsWith("’") && data.endsWith("’")) {
+				console.log("Herreeeeeee")
 				description = data.substring(1, data.length - 1);
 			}
 			return description;
