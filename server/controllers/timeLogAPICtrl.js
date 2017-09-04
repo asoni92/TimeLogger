@@ -117,8 +117,8 @@ module.exports = function(app) {
 	 
      
 	controller.populateUserIdAndProcessRequest = function (req, res, next) {
-	    console.log(req)
-	    try {
+	    console.log("Name is "+req.body.user_name)
+		try {
 	    	schema.model('User').forge().where({
 				username: req.body.user_name,
 				active: 1
@@ -129,14 +129,16 @@ module.exports = function(app) {
 					console.log('User id is '+req.headers.user_id)
 					processRequest(req, res, next);
 				} else {
-					return res.send(getErrorMessage('No record found for following user.'));
+					return res.send(getErrorMessage('No record found for following user3.'));
 				}
 			}).catch(function (err) {
-				return res.send(getErrorMessage('No record found for following user.'));
+				console.log("-------")
+				console.log(err)
+				return res.send(getErrorMessage('No record found for following user2.'));
 			});
 	    } catch(ex) {
 	    	console.log(ex)
-	    	return res.send(getErrorMessage('No record found for following user.'));
+	    	return res.send(getErrorMessage('No record found for following user 1.'));
 	    }     
 	}
 
