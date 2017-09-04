@@ -180,6 +180,7 @@ module.exports = function (app, cb) {
     var queryDebugMode = config1.queryDebugMode
     
     populateUserId = function (req, res, next) {
+    	console.log(req)
     	try {
 	        schema = app.get('schema')
 	        schema.model('User').forge().where({
