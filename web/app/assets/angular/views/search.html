@@ -1,0 +1,217 @@
+<nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="#" class="navbar-brand"><img alt="" ng-if="domainName == 'microsoft'" ng-src="{{logoPath}}"/>
+                <img alt="" ng-if="domainName != 'microsoft'" style="width : 130px; height : 50px;" ng-src="{{logoPath}}"/>
+          </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar">          
+          <ul class="nav navbar-nav navbar-right">
+			  <li class="curved"><button class="btn btn-default" type="submit" ng-click="backToScheduler()">{{'meetingApp.returnToSchedular'|translate}}</button></li>
+			  <li class="link"><a logout><i class="fa fa-power-off fa-lg"></i></a></li>
+		  </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    
+    <div class="legends-bar">
+    	<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+					<h4 class="title font-regular">{{eventObj.eventName}}</h4>
+				</div>
+				<div class="col-sm-6">
+					&nbsp;
+				</div>
+				<div class="clearfix"></div>
+			</div>
+   		</div>   	
+	</div>
+    <div class="container">
+		<div class="row">
+			<div class="div-table">
+				<div class="div-row">
+					<div class="col-sm-4 col-md-3 div-cell left"  id="searchBox">
+                        <h4 class="text-muted font-regular">{{'meetingApp.searchForAttendees'|translate}}</h4>
+                        <div class="form-group">
+                            <label>{{'meetingApp.firstName'|translate}}</label>
+                            <input type="text" class="form-control"  placeholder="First Name" ng-enter="getRegistrationData()" ng-model="searchObject.firstName"/>
+                        </div>
+                        <div class="form-group">
+                            <label>{{'meetingApp.lastName'|translate}}</label>
+                            <input type="text" class="form-control" placeholder="Last Name" ng-enter="getRegistrationData()"  ng-model="searchObject.lastName"/>
+                        </div>
+                        <div class="form-group">
+                            <label>{{'meetingApp.company'|translate}}</label>
+                            <input type="text" class="form-control" placeholder="Company" ng-enter="getRegistrationData()" ng-model="searchObject.organization"/>
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="clearSearchFilter()"  ng-disabled="loading">{{'meetingApp.actions.clear'|translate}}</button>
+                            <button type="button" class="btn btn-success btn-sm" ng-click="getRegistrationData()" ng-disabled="loading">{{'meetingApp.actions.search'|translate}}</button>
+                        </div>
+                        <hr>
+                        <p>{{'meetingApp.addNewAttendeeNote'|translate}}</p>
+                        <div class="form-group text-right">
+                            <button type="button" class="btn btn-success" ng-click="openNewAttendeeModal()" ng-disabled="loading">{{'meetingApp.addNewAttendee'|translate}}</button>
+                        </div>
+                	</div>
+                    <div class="row" ng-if="loading">
+                        <p class="tCenter m60"><img src="/app/assets/angular/img/loading32.gif"/></p>
+                    </div>
+                    <div class="col-sm-8 col-md-9 div-cell" ng-if="!loading">
+       				    <div class="col-sm-12 boxBorder">
+                            <p class="fs18"><span class="text-muted">{{'meetingApp.attendeeFound'|translate}}</span> ({{registrations.length}})</p>
+                            <div class="noRecordBox" ng-if="!loading && registrations.length == 0">{{'meetingApp.messages.noRecord'|translate}}</div>
+                            <div class="table-responsive" ng-if="!loading && registrations.length > 0">
+                                <div class="col-sm-12 mb10">
+                                    <div class="col-sm-4 p0 regListHeader">{{'meetingApp.attendeeName'|translate}}</div>
+                                    <!-- <div class="col-sm-4 p0 regListHeader">{{'meetingApp.attendeeStatus'|translate}}</div>  -->
+                                    <div class="col-sm-4 p0 regListHeader">Attendee Type Code</div>
+                                    <div class="col-sm-4 p0 regListHeader"></div>
+                                </div>
+                                <div class="col-sm-12 attendeeListBox p0">
+                                    <div ng-repeat="reg in registrations" class="">
+                                        <div class="col-sm-12 regListData">
+                                            <div class="col-sm-4 p0">
+                                                <h5 class="mt0"><strong>{{reg.firstName}} {{reg.lastName}}</strong><br><small>{{reg.organization}}</small></h5>
+                                            </div>
+                                            <div class="col-sm-3 p0">
+                                                {{reg.attendeeTypeCode}}
+                                            </div>
+                                            <div class="col-sm-5 p0">
+                                                <button type="button" class="btn btn-success btn-sm" ng-click="getMeetingDetails(reg)">{{'meetingApp.meetingDetails'|translate}}</button>
+                                                <button type="button" class="btn btn-success btn-sm pull-right" ng-click="backToScheduler(reg)">{{'meetingApp.scheduleNewMeeting'|translate}}</button>
+                                            </div>
+                                        </div>    
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                        <div class="col-sm-12 boxBorder mt15" ng-if="!loading && isMeetingDetail">
+                            <p class="fs18">
+                                <span class="text-muted col-sm-6 p0 pt5 pb5 upperCase">{{'meetingApp.attendeeMeetings'|translate}}  &nbsp;({{sessionDetailOfRegistration.length}})</span>
+                                <span class="text-muted clr-black tRight col-sm-6 p0 p0 pt5 pb5">{{selectedRegistration.profile.firstName}} &nbsp;{{selectedRegistration.profile.lastName}}</span>
+                            </p>
+                            <div class="noRecordBox table-responsive" ng-if="!detailLoading && sessionDetailOfRegistration.length == 0">{{'meetingApp.messages.noRecord'|translate}}</div>
+                            <div class="col-sm-12 p0">
+                                <div class="col-sm-12 p0" ng-if="!detailLoading && sessionDetailOfRegistration.length > 0">
+                                    <div class="col-sm-12 p0 mb10">
+                                        <div class="col-sm-4 regListHeader">{{'meetingApp.meetingName'|translate}}</div>
+                                        <div class="col-sm-4 regListHeader">{{'meetingApp.roomName'|translate}}</div>
+                                        <div class="col-sm-4 regListHeader">{{'meetingApp.status'|translate}}</div>
+                                    </div>
+                                    <div class="col-sm-12 meetingListBox p0">
+                                        <div ng-repeat="session in sessionDetailOfRegistration" ng-if="session.statusId != 2">
+                                            <div class="col-sm-12 sessionListData p0">
+                                                <div class="col-sm-4">
+                                                    <h5 class="mt0"><strong>{{session.sessionTitle}}</strong><br><small>{{session.startDateString}}</small></h5>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    {{session.venue}} - {{session.locationCode}}
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <h5 class="mt0"><strong>{{session.registrationSessionStatus}}</strong>&emsp;
+                                                    <button type="button" class="btn btn-default btn-sm btn-black" ng-disabled="checkInLoading" ng-if="session.registrationSessionStatus != checkInStatus && showCheckInAll" ng-click="updateSessionStatusOfRegistration(session)">{{'meetingApp.actions.checkIn'|translate}}</button>
+                                                    <button type="button" class="btn btn-default btn-sm btn-black" ng-disabled="checkInLoading" ng-if="session.registrationSessionStatus != checkInStatus && showCheckInAll" ng-click="getAllAttendeesBySessionId(session)">{{'meetingApp.actions.checkInAll'|translate}}</button>
+                                                </h5>
+                                                </div>
+                                            </div>    
+                                        </div>
+                                    </div>    
+                                </div>
+                                <div class="col-sm-12" ng-if="detailLoading">
+                                    <p class="tCenter m60"><img src="/app/assets/angular/img/loading32.gif"/></p>
+                                </div> 
+                            </div>
+                        </div>   
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+<script type="text/ng-template" id="addAttendeeModal.html">
+    <div class="modal-content model-grey">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">{{'meetingApp.newAttendee'|translate}}</h4>
+        </div>
+        <div class="modal-body height-75">
+			<div class="col-sm-12" ng-if="!savingRegistration">
+            	<div class="form-group required">
+                	<label class="boldFont">{{'meetingApp.firstName'|translate}}</label>
+                	<input type="text" class="form-control" placeholder="First Name" ng-model="newAttendee.profile.firstName">
+            	</div>
+            	<div class="form-group required">
+                	<label class="boldFont">{{'meetingApp.lastName'|translate}}</label>
+                	<input type="text" class="form-control" placeholder="Last Name" ng-model="newAttendee.profile.lastName">
+            	</div>
+            	<div class="form-group required">
+                	<label class="boldFont">{{'meetingApp.email'|translate}}</label>
+                	<input type="text" class="form-control" placeholder="Email" ng-model="newAttendee.profile.email">
+            	</div>
+            	<div class="form-group">
+                	<label class="boldFont">{{'meetingApp.company'|translate}}</label>
+                	<input type="text" class="form-control" placeholder="Company" ng-model="newAttendee.profile.organization">
+            	</div>
+            	<div class="form-group required">
+                	<label class="boldFont">Attendee Type</label>
+                	<select class="form-control" ng-model="newAttendee.attendeeType" ng-options="i as i.name for i in allowedAttendeeType track by i.code" ng-selected="i == newAttendee.attendeeType"></select>
+            	</div>
+			</div>
+			<div class="col-sm-12" ng-if="savingRegistration">
+    			<p class="tCenter m60"><img src="/app/assets/angular/img/loading32.gif"/></p>
+			</div>  
+        </div>
+        <div class="modal-footer">		  	
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="savingRegistration" ng-click="close()">{{'meetingApp.actions.close'|translate}}</button>
+            <button type="button" class="btn btn-success" ng-disabled="savingRegistration" ng-click="validateUserAgainstEmail()">{{'meetingApp.actions.save'|translate}}</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="checkInAllAttendees.html">
+    <div class="modal-content model-grey">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">{{'meetingApp.actions.checkInAll'|translate}}</h4>
+        </div>
+        <div class="modal-body height-75">
+            <div class="table-responsive" ng-if="!loading && registrations.length > 0">
+                <div class="col-sm-12 mb10">
+                    <div class="col-sm-6 p0 regListHeader">{{'meetingApp.attendeeName'|translate}}</div>
+                </div>
+                <div class="col-sm-12 attendeeListBox p0">
+                    <div ng-repeat="attendee in attendeesForMeeting" class="">
+                        <div class="col-sm-12 regListData pb0">
+                            <div class="col-sm-6 p0">
+                                <h5 class="mt0"><strong>{{attendee.firstName}} {{attendee.lastName}}</strong><small ng-if="attendee.position!=null && attendee.position!=undefined && attendee.position!=''"> - {{attendee.position}}</small>
+                                    <br><small>{{attendee.organization}}</small></h5>
+                            </div>
+                            <div class="col-sm-6 p0">
+                                <h5 class="mt0"><strong>{{attendee.registrationSessionStatus}}</strong>&emsp;
+                                <button type="button" class="btn btn-success btn-sm pull-right" ng-disabled="checkInLoading" ng-if="attendee.registrationSessionStatus != checkInStatus" ng-click="checkInAttendee(attendee)">{{'meetingApp.actions.checkIn'|translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- <div class="col-sm-12" ng-if="savingRegistration">
+    			<p class="tCenter m60"><img src="/app/assets/angular/img/loading32.gif"/></p>
+			</div>   -->
+        </div>
+        <div class="modal-footer">		  	
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="savingRegistration" ng-click="close()">{{'meetingApp.actions.close'|translate}}</button>
+            <button type="button" class="btn btn-success" ng-disabled="checkInLoading" ng-click="checkInAllAttendees()">{{'meetingApp.actions.checkInAll'|translate}}</button>
+        </div>
+    </div>
+</script>

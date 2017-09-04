@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="concurApp" ng-controller="concurMainCtrl">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Meeting App</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- Bootstrap core CSS -->
+    <link href="/app/assets/angular/css/library/bootstrap.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/app/assets/angular/css/library/autocomplete-multiselect.css" rel="stylesheet">
+    <link href="/app/assets/angular/css/style.css" rel="stylesheet">
+    <link href='/app/assets/angular/css/library/fullcalendar.min.css' rel='stylesheet' />
+    <link href='/app/assets/angular/css/library/sweetAlert.css' rel='stylesheet' />
+    <link href='/app/assets/angular/css/library/pnotify.custom.min.css' rel='stylesheet' />
+	<link href='/app/assets/angular/css/library/fullcalendar.print.css' rel='stylesheet' media='print' />
+	<link href='/app/assets/angular/css/library/scheduler.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.css' rel='stylesheet' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/multiple-select/1.2.0/multiple-select.min.css' rel='stylesheet' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.buttons.css' rel='stylesheet' />
+    <link rel="stylesheet" href="/app/assets/angular/css/library/ui-grid.css" type="text/css" />
+    
+    <script src="/app/assets/angular/libs/jquery.js"></script>
+	<script src="/app/assets/angular/libs/jquery-ui.js"></script>
+	<base href="/">
+</head>
+
+<body class="bodyClass">
+    <div ui-view></div>
+
+    <!-- App -->
+    <script src="/app/assets/angular/libs/moment.min.js"></script>
+    <script src="/app/assets/angular/libs/moment-with-timezone.min.js"></script>
+    <script src='/app/assets/angular/libs/fullcalendar.min.js'></script>
+    <script src='/app/assets/angular/libs/scheduler.min.js'></script>
+    <script src='/app/assets/angular/libs/pnotify.custom.min.js'></script>
+    <!-- App scripts -->
+    <script src="/app/assets/angular/libs/angular/angular.min.js"></script>
+    <script src="/app/assets/angular/libs/angular/angular-resource.min.js"></script>
+    <script src="/app/assets/angular/libs/angular/angular-route.min.js"></script>
+    <script src="/app/assets/angular/libs/bootstrap.min.js"></script>
+    <script src="/app/assets/angular/libs/sweetAlert.js"></script>
+    <script src="/app/assets/angular/libs/angular/angular-ui-router.min.js"></script>
+    <script src="/app/assets/angular/libs/angular/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <script src="/app/assets/angular/libs/angular/angular-ui/ui-utils.min.js"></script>
+    <script src="/app/assets/angular/libs/angular/angular-chosen.js"></script>
+    <script src="/app/assets/angular/libs/angular/angular-touch.js"></script>
+    <script src="/app/assets/angular/libs/angular/angular-ui-switch.js"></script>
+    <script src="/app/assets/angular/libs/angular/angular-local-storage.min.js"></script> 
+    <script src="/app/assets/angular/libs/angular/angular-cookies-custom.js"></script>
+  <!--  -->  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/multiple-select/1.2.0/multiple-select.js"></script> 
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular-cookies.js"></script> 
+    <script type="text/javascript" src="/app/assets/angular/libs/angular/angular-translate.min.js"></script>
+    <script type="text/javascript" src="/app/assets/angular/libs/angular/angular-translate-loader-static-files.min.js"></script>
+    <script type="text/javascript" src="/app/assets/angular/libs/angular/angular-css-injector.js"></script>
+    <script src="/app/assets/angular/libs/angular-async.min.js"></script>
+    <script src="/app/assets/angular/libs/ui-grid.js"></script>
+    <script src="/app/assets/angular/libs/angular/angular-bootstrap-multiselect.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.confirm.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.buttons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.buttons.js"></script>
+    <script src="/app/assets/angular/libs/multiselect.js"></script>
+    <script type="text/javascript" src="/app/assets/angular/libs/angular-pnotify.js"></script>
+    <script src="app/assets/angular/libs/lodash.js"></script>
+    <script type="text/javascript" src="/app/assets/angular/libs/ng-file-upload.min.js"></script>
+    <script type="text/javascript" src="/app/assets/angular/libs/ng-file-upload.min.js"></script>
+    <script type="text/javascript" src="/app/assets/angular/libs/autocomplete-multiselect.js"></script>
+    
+    <!-- Injection Module -->
+    <script src="/app/appModule/app.js"></script>
+    <!-- inject:angular:js-->
+   
+    <script src="/app/assets/angular/js/directives/CommonUtils.js"></script>
+    <script src="/app/assets/angular/js/services/commonUtils/GlobalVariableService.js"></script>
+    <script src="/app/assets/angular/js/services/commonUtils/GlobalMethodService.js"></script>
+    <script src="/app/assets/angular/js/controllers/LoginCtrl.js"></script>
+    <script src="/app/assets/angular/js/controllers/EventCtrl.js"></script>
+    <script src="/app/assets/angular/js/controllers/LogoutCtrl.js"></script>
+    
+    <script src="/app/appModule/config/routeConfig.js"></script>
+    <script src="/app/assets/angular/js/factory/AuthFctry.js"></script>
+    <script src="/app/assets/angular/js/factory/SessionsFactory.js"></script>
+    <script src="/app/assets/angular/js/factory/CalendarFctry.js"></script>
+    <script src="/app/assets/angular/js/factory/SearchFctry.js"></script>
+    <script src="/app/assets/angular/js/factory/meetingInfoFctry.js"></script>
+    <script src="/app/assets/angular/js/controllers/CalendarCtrl.js"></script>
+    <script src="/app/assets/angular/js/controllers/CheckInCtrl.js"></script>
+    <script src="/app/assets/angular/js/controllers/SetupCtrl.js"></script>
+    <script src="/app/assets/angular/js/controllers/configurableQuestions.js"></script>
+    <script src="/app/assets/angular/js/controllers/AttendeeSearchCtrl.js"></script>
+    <script src="/app/assets/angular/js/controllers/RegCodeLookUpCtrl.js"></script>
+    <script src="/app/assets/angular/js/controllers/MeetingByLocationCtrl.js"></script>
+    <script src="/app/assets/angular/js/controllers/UpdateMeetingCtrl.js"></script>
+    <script src="/app/assets/angular/js/controllers/DemoRequest.js"></script>
+    <!--<script src="/app/assets/angular/js/controllers/DiscoveryQuestionsCtrl.js"></script>-->
+    <script src="/app/assets/angular/js/controllers/HomeCtrl.js"></script>
+    <script src="/app/assets/angular/js/controllers/SearchCtrl.js"></script>
+    <script src="/app/assets/angular/js/controllers/PullRefreshCtrl.js"></script>
+    <script src="/app/assets/angular/js/directives/ngDropdownMultiselect.js"></script>
+    <script src="/app/appModule/run/AppRun.js"></script>
+    <script src="/app/appModule/interceptor/RequestInterceptor.js"></script>
+    <!--<script src="/app/appModule/settings/Settings.js"></script>-->
+    <!--endinject-->
+
+</body>
+
+</html>

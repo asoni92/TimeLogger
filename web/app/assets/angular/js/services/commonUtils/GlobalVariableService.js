@@ -1,0 +1,1 @@
+concurApp.factory('GlobalVariableService', function($location) {return {"eventId":24097,"accountCode":"marketing","eventCode":"managedmeetingsApr11","accountId":16,"userId":2491,"serverUrl":"http://localhost:3000","certainServer":"stagingx.certain.com","company":"microsoft"}});

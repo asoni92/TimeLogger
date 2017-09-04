@@ -1,0 +1,638 @@
+<nav class="navbar navbar-inverse">
+	<div class="container">
+		<div class="navbar-header">
+			<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed"
+			    type="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+			<h2 class="eventHeader">Events</h2>
+		</div>
+		<div class="collapse navbar-collapse" id="navbar">
+			<ul class="nav navbar-nav navbar-right">
+				<li class="link"><a ng-click="getEvents()">Refresh Data <i class="fa fa-refresh fa-lg"></i></a></li>
+				<li class="link"><a ng-click="showVersionMessageBox($event)"><i class="fa fa-info-circle fa-lg"></i></a></li>
+				<li class="link"><a logout><i class="fa fa-power-off fa-lg"></i></a></li>
+			</ul>
+		</div>
+		<!--/.nav-collapse -->
+	</div>
+</nav>
+<div class="col-sm-12" ng-if="loading || pullRefreshing">
+	<p class="tCenter m60"><img src="/app/assets/angular/img/loading32.gif" /></p>
+</div>
+<div class="col-sm-12 pt10" ng-if="!loading && !pullRefreshing">
+	<div class="col-sm-12">
+		<button type="button" class="btn btn-success btn-sm" ng-click="addNewEvent()">Add New</button>
+	</div>
+</div>
+<div class="row" ng-if="!loading && !pullRefreshing">
+	<div class="col-sm-12">
+		<div class="col-sm-12 pt10">
+			<div class="col-sm-12 mb10 eventListHeader">
+				<div class="col-sm-1 regListHeader">S.No</div>
+				<div class="col-sm-3 regListHeader">Event Name</div>
+				<div class="col-sm-2 regListHeader">Start Time</div>
+				<div class="col-sm-2 regListHeader">End Time</div>
+				<div class="col-sm-1 regListHeader">Account Code</div>
+				<div class="col-sm-2 regListHeader">Event Code</div>
+				<div class="col-sm-1 regListHeader"></div>
+			</div>
+			<div class="col-sm-12 eventListBox p0">
+				<div ng-repeat="event in events">
+					<div class="col-sm-12 sessionListData">
+						<div class="col-sm-1">
+							{{$index+1}}
+						</div>
+						<div class="col-sm-3">
+							<h5 class="mt0"><strong>{{event.eventName}}</strong></h5>
+						</div>
+						<div class="col-sm-2">
+							<h5 class="mt0"><strong>{{event.startDate | date : "MMM dd, yyyy - hh:mm a"}}</strong></h5>
+						</div>
+						<div class="col-sm-2">
+							<h5 class="mt0"><strong>{{event.endDate | date : "MMM dd, yyyy - hh:mm a"}}</strong></h5>
+						</div>
+						<div class="col-sm-1">
+							<h5 class="mt0"><strong>{{event.accountCode}}</strong></h5>
+						</div>
+						<div class="col-sm-2">
+							<h5 class="mt0"><strong>{{event.eventCode}}</strong></h5>
+						</div>
+						<div class="col-sm-1">
+							<span ng-click="goToCalendar(event)" title="Go To Event" class=" cursor-pointer"><i class="fa fa-arrow-right  fa-lg"></i></span>&nbsp;
+							<span ng-click="pullToRefreshData(event)" title="Pull to Refresh" class=" cursor-pointer"><i class="fa fa-refresh  fa-lg"></i></span>&nbsp;
+							<span title="Setting" class=" cursor-pointer" ng-click="openEventSettings(event)"><i class="fa fa-cogs fa-lg  cursor-pointer"></i></span>&nbsp;
+							<span ng-click="makeDefaultEvent(event)" title="Make It Default Event" class=" cursor-pointer"><i ng-class="event.isDefault == 1? 'fa fa-check-circle  fa-lg' : 'fa fa-circle-o fa-lg'"></i></span>&nbsp;
+							<span title="Delete" class=" cursor-pointer" ng-click="deleteEventById(event)"><i class="fa fa-trash-o fa-lg  cursor-pointer"></i></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12" ng-if="detailLoading">
+			<p class="tCenter m60"><img src="/app/assets/angular/img/loading32.gif" /></p>
+		</div>
+	</div>
+</div>
+<div class="col-sm-12" ng-if="configPageLoading">
+	<p class="tCenter m60"><img src="/app/assets/angular/img/loading32.gif" /></p>
+</div>
+<div class="col-sm-12" ng-if="showConfigPage && !configPageLoading && !pullRefreshing">
+
+
+</div>
+<div class="col-sm-12" ng-if="showConfigPage && !configPageLoading && !pullRefreshing">
+	<div class="col-sm-12 tCenter">
+		<h3>Configuration Settings for : {{selectedEvent.eventName}}</h3>
+	</div>
+	<tabset active="active">
+		<tab index="0" heading="Meeting Info Config">
+			<div class="col-sm-12 tCenter">
+				<h3>Meeting Info Configuration</h3>
+			</div>
+			<div class="col-sm-12">
+				<div class="col-sm-4 configBox">
+					<div class="col-sm-11 pt5">
+						<p ng-if="isEditMeetingInfo" class="tCenter pt10 textGreen">In Edit Mode</p>
+						<div class="form-group">
+							<span>Meeting Type</span>
+							<select class="form-control" ng-model="meetingType.id" ng-change="getConfigData()">
+		                        <option ng-repeat="type in meetingTypes" ng-value="type.typeId" ng-selected="meetingType.id == type.typeId">{{type.sessionType}}</option>
+		                    </select>
+						</div>
+						<div class="form-group">
+							<span>Choose Option</span>
+							<select class="form-control" id="sel1" ng-model="configElementSelector.id">
+		                        <option value="1">Header</option>
+		                        <option value="2">SubHeader</option>
+		                        <option value="3">Horizontal Bar</option>
+		                        <option value="4">Profile Field</option>
+		                        <option value="5">Question</option>
+		                    </select>
+						</div>
+						<label ng-if="configElementSelector.id != 3 && configElementSelector.id != 5">Field Value</label>
+						<input class="form-control" placeholder="Named Value" ng-if="configElementSelector.id != 3 && configElementSelector.id != 5"
+						    ng-model="configInput.value" />
+						<div class="form-group pt10" ng-if="configElementSelector.id == 5">
+							<label>Choose Question</label>
+							<select class="form-control" ng-options="question as question.questionName for question in eventQuestion" ng-model="configElementSelector.question"
+							    ng-change="updateQuestionConfig()"></select>
+						</div>
+						<div class="form-group pt10" ng-if="configElementSelector.id == 4">
+							<label>Choose Profile Field</label>
+							<select class="form-control" id="sel1" ng-model="configElementSelector.profileFieldValue">
+		                        <option value="firstName">First Name</option>
+		                        <option value="lastName">Last Name</option>
+		                        <option value="email">Email</option>
+		                        <option value="position">Position</option>
+		                        <option value="organization">Organization</option>
+		                        <option value="mobile">Mobile</option>
+		                    </select>
+						</div>
+					</div>
+					<div class="col-sm-1 p0">
+						<br/><br/><br/><br/><br/>
+						<span title="Delete" class="cursor-pointer" ng-click="addConfigElement()"><i class="fa  fa-plus-circle fa-lg  cursor-pointer"></i></span>
+					</div>
+				</div>
+				<div class="col-sm-8 configBox">
+					<h4 class="textGreen">Clear All <a ng-click="refreshPreview()" title="Refresh Preview"><i class="fa fa-refresh fa-md"></i></a></h4>
+					<div class="col-sm-12">
+						<button type="button" class="btn btn-success btn-sm pull-right" style="margin-top : -30px" ng-click="saveConfig()">Save Config</button>
+					</div>
+					<div class="col-sm-12">
+						<div ng-repeat="x in configElements track by $index">
+							<div class="col-sm-12" ng-if="x.id == 3">
+								<p class="pull-right mbNeg10"><i class="fa fa-pencil mr5" ng-click="enableEditModeForMeetingConfig($index)"></i><i class="fa fa-close" ng-click="removeElementFromConfig($index)"></i></p>
+								<hr class="solid-green" ng-if="x.id == 3">
+							</div>
+							<div class="col-sm-12 pb5 pt5" ng-if="x.id == 1">
+								<p class="boldFont textGreen pull-left">{{x.value}}</p>
+								<p class="pull-right"><i class="fa fa-pencil mr5" ng-click="enableEditModeForMeetingConfig($index)"></i><i class="fa fa-close" ng-click="removeElementFromConfig($index)"></i></p>
+							</div>
+							<div class="col-sm-12" ng-if="x.id == 2">
+								<div class="col-sm-12 pb5 pt5">
+									<p class="boldFont textGreen pull-left">{{x.value}}</p>
+									<p class="pull-right"><i class="fa fa-pencil mr5" ng-click="enableEditModeForMeetingConfig($index)"></i><i class="fa fa-close" ng-click="removeElementFromConfig($index)"></i></p>
+								</div>
+							</div>
+							<div class="col-sm-6 pb5 pt5" ng-if="x.id == 4">
+								<p class="boldFont textGreen pull-left">{{x.value}}</p>
+								<p class="pull-right"><i class="fa fa-pencil mr5" ng-click="enableEditModeForMeetingConfig($index)"></i><i class="fa fa-close" ng-click="removeElementFromConfig($index)"></i></p>
+								<input disabled class="form-control" ng-value="x.fieldName" />
+							</div>
+							<div class="col-sm-6 pb5 pt5" ng-if="x.id == 5">
+								<p class="boldFont textGreen pull-left">{{x.fieldName}}</p>
+								<p class="pull-right"><i class="fa fa-pencil mr5" ng-click="enableEditModeForMeetingConfig($index)"></i><i class="fa fa-close" ng-click="removeElementFromConfig($index)"></i></p>
+								<input disabled class="form-control" placeHolder="Answer Options" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 pt10">
+			</div>
+		</tab>
+		<tab index="1" heading="Attendee Type Config">
+			<div class="col-sm-12 tCenter">
+				<h3>Attendee Type Configuration</h3>
+			</div>
+			<div class="col-sm-12">
+				<div class="col-sm-12">
+					<div class="col-sm-12">
+						<button type="button" class="btn btn-success btn-sm pull-right" style="margin-top : -30px" ng-click="saveAllowedAttendeeTypes()"
+						    title="Save Attendee Type Config">Save Config</button>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-4 ">
+							<div class="col-sm-12">
+								<h4 class="textGreen">Attendee Types</h4>
+							</div>
+							<div class="col-sm-12">
+								<div ng-dropdown-multiselect="" options="attendeeTypes" selected-model="attendeeTypeData.allowedAttendeeType" checkboxes="true"
+								    extra-settings="attendeeTypeDropDownSettings" events="{ onItemDeselect: checkForDefaultAttendeeType()}"></div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="col-sm-12">
+								<h4 class="textGreen">Allowed Attendee Types</h4>
+							</div>
+							<div class="col-sm-12 allowedTypeBox">
+								<div class="col-sm-12 allowedTypeBoxItem" ng-repeat="item in attendeeTypeData.allowedAttendeeType">
+									<div class="col-sm-10">
+										{{item.name}}
+									</div>
+									<div class="col-sm-2">
+										<span ng-click="makeDefaultAttendeeType(item)" title="Make It Default Attendee Type" class=" cursor-pointer"><i ng-class="attendeeTypeData.defaultAttendeeType.code == item.code ? 'fa fa-check-circle  fa-lg' : 'fa fa-circle-o fa-lg'"></i></span>&nbsp;
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="col-sm-12">
+								<h4 class="textGreen">Default Attendee Type</h4>
+							</div>
+							<div class="col-sm-12">
+								<input type="text" class="form-control" disabled ng-model="attendeeTypeData.defaultAttendeeType.name">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 pt20">
+			</div>
+		</tab>
+		<tab index="2" heading="Meeting Type Config">
+			<div class="col-sm-12 tCenter">
+				<h3>Meeting Type Configuration</h3>
+			</div>
+			<div class="col-sm-12">
+				<div class="col-sm-12">
+					<div class="col-sm-12">
+						<button type="button" class="btn btn-success btn-sm pull-right" style="margin-top : -30px" ng-click="saveDefaultMeetingType()"
+						    title="Save Default Meeting Type">Save Config</button>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-6">
+							<div class="col-sm-12">
+								<h4 class="textGreen">Meeting Types</h4>
+							</div>
+							<div class="col-sm-12 allowedTypeBox">
+								<div class="col-sm-12 allowedTypeBoxItem" ng-repeat="item in configuredMeetingTypes">
+									<div class="col-sm-10">
+										{{item.sessionType}}
+									</div>
+									<div class="col-sm-2">
+										<span ng-click="makeDefaultMeetingType(item)" title="Make It Default Meeting Type" class=" cursor-pointer"><i ng-class="defaultMeetingType.typeId == item.typeId ? 'fa fa-check-circle  fa-lg' : 'fa fa-circle-o fa-lg'"></i></span>&nbsp;
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="col-sm-12">
+								<h4 class="textGreen">Default Meeting Type</h4>
+							</div>
+							<div class="col-sm-12">
+								<input type="text" class="form-control" disabled ng-model="defaultMeetingType.sessionType">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 pt20">
+			</div>
+		</tab>
+		<tab index="3" heading="Requester/Participants Config">
+			<div class="col-sm-12 tCenter">
+				<h3>Requester/Participants Configuration</h3>
+			</div>
+			<div class="col-sm-12">
+				<div class="col-sm-4 configBox">
+					<div class="col-sm-11 pt5">
+						<div class="form-group pt10">
+							<label>Choose Section</label>
+							<select class="form-control" ng-model="configElementSelector.section">
+								<option value="msftAMDetails">Microsoft Account Manager Details</option>
+								<option value="msftHostDetails">Microsoft Host Details</option>
+								<option value="msftAdditionalParticipantsDetails1">Additional Microsoft Participants 1</option>
+								<option value="msftAdditionalParticipantsDetails2">Additional Microsoft Participants 2</option>
+								<option value="msftAdditionalParticipantsDetails3">Additional Microsoft Participants 3</option>
+								<option value="msftAdditionalParticipantsDetails4">Additional Microsoft Participants 4</option>
+								<option value="msftAdditionalParticipantsDetails5">Additional Microsoft Participants 5</option>
+								<option value="customerPartnerAttendee1">Customer/Partner Attendee 1</option>
+								<option value="customerPartnerAttendee2">Customer/Partner Attendee 2</option>
+								<option value="customerPartnerAttendee3">Customer/Partner Attendee 3</option>
+								<option value="customerPartnerAttendee4">Customer/Partner Attendee 4</option>
+								<option value="customerPartnerAttendee5">Customer/Partner Attendee 5</option>
+							</select>
+						</div>
+						<div class="form-group pt10">
+							<label>Choose Question</label>
+							<select class="form-control" ng-options="question as question.questionName for question in eventQuestion" ng-model="configElementSelector.question"></select>
+						</div>
+						<div class="form-group pt10">
+							<label>Choose Mapping Field</label>
+							<select class="form-control" id="sel1" ng-model="configElementSelector.profileFieldValue">
+		                        <option value="firstName">First Name</option>
+		                        <option value="lastName">Last Name</option>
+		                        <option value="email">Email</option>
+		                        <option value="position">Position</option>
+		                        <option value="organization">Organization</option>
+		                        <option value="mobile">Mobile</option>
+		                    </select>
+						</div>
+					</div>
+					<div class="col-sm-1 p0">
+						<br/><br/><br/><br/><br/>
+						<span title="Add" class="cursor-pointer" ng-click="addReqParticipantConfigElement()"><i class="fa fa-plus-circle fa-lg  cursor-pointer"></i></span>
+					</div>
+				</div>
+				<div class="col-sm-8 configBox">
+					<h4 class="textGreen">Clear All <a ng-click="refreshRequesterConfig()" title="Refresh Preview"><i class="fa fa-refresh fa-md"></i></a></h4>
+					<div class="col-sm-12">
+						<button type="button" class="btn btn-success btn-sm pull-right" style="margin-top : -30px" ng-click="saveRequesterParticipantsConfig()">Save Config</button>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.msftAMDetails">
+							<p class="boldFont textGreen">Microsoft Account Manager Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.msftAMDetails">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="amDetails in requesterConfig.msftAMDetails">
+										<td>{{amDetails.questionCode}}</td>
+										<td>{{amDetails.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.msftHostDetails">
+							<p class="boldFont textGreen">Microsoft Host Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.msftHostDetails">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="host in requesterConfig.msftHostDetails">
+										<td>{{host.questionCode}}</td>
+										<td>{{host.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.msftAdditionalParticipantsDetails1">
+							<p class="boldFont textGreen">Additional Microsoft Participant 1 Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.msftAdditionalParticipantsDetails1">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="participant1 in requesterConfig.msftAdditionalParticipantsDetails1">
+										<td>{{participant1.questionCode}}</td>
+										<td>{{participant1.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.msftAdditionalParticipantsDetails2">
+							<p class="boldFont textGreen">Additional Microsoft Participant 2 Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.msftAdditionalParticipantsDetails2">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="participant2 in requesterConfig.msftAdditionalParticipantsDetails2">
+										<td>{{participant2.questionCode}}</td>
+										<td>{{participant2.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.msftAdditionalParticipantsDetails3">
+							<p class="boldFont textGreen">Additional Microsoft Participant 3 Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.msftAdditionalParticipantsDetails3">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="participant3 in requesterConfig.msftAdditionalParticipantsDetails3">
+										<td>{{participant3.questionCode}}</td>
+										<td>{{participant3.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.msftAdditionalParticipantsDetails4">
+							<p class="boldFont textGreen">Additional Microsoft Participant 4 Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.msftAdditionalParticipantsDetails4">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="participant4 in requesterConfig.msftAdditionalParticipantsDetails4">
+										<td>{{participant4.questionCode}}</td>
+										<td>{{participant4.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.msftAdditionalParticipantsDetails5">
+							<p class="boldFont textGreen">Additional Microsoft Participant 5 Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.msftAdditionalParticipantsDetails5">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="participant5 in requesterConfig.msftAdditionalParticipantsDetails5">
+										<td>{{participant5.questionCode}}</td>
+										<td>{{participant5.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.customerPartnerAttendee1">
+							<p class="boldFont textGreen">Customer/Partner Attendee 1 Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.customerPartnerAttendee1">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="cp1 in requesterConfig.customerPartnerAttendee1">
+										<td>{{cp1.questionCode}}</td>
+										<td>{{cp1.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.customerPartnerAttendee2">
+							<p class="boldFont textGreen">Customer/Partner Attendee 2 Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.customerPartnerAttendee2">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="cp2 in requesterConfig.customerPartnerAttendee2">
+										<td>{{cp2.questionCode}}</td>
+										<td>{{cp2.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.customerPartnerAttendee3">
+							<p class="boldFont textGreen">Customer/Partner Attendee 3 Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.customerPartnerAttendee3">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="cp3 in requesterConfig.customerPartnerAttendee3">
+										<td>{{cp3.questionCode}}</td>
+										<td>{{cp3.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.customerPartnerAttendee4">
+							<p class="boldFont textGreen">Customer/Partner Attendee 4 Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.customerPartnerAttendee4">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="cp4 in requesterConfig.customerPartnerAttendee4">
+										<td>{{cp4.questionCode}}</td>
+										<td>{{cp4.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-sm-12 pb5 pt5" ng-if="requesterConfig.customerPartnerAttendee5">
+							<p class="boldFont textGreen">Customer/Partner Attendee 5 Details</p>
+						</div>
+						<div class="col-sm-12" ng-if="requesterConfig.customerPartnerAttendee5">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Source Field</th>
+										<th>Target Field</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="cp5 in requesterConfig.customerPartnerAttendee5">
+										<td>{{cp5.questionCode}}</td>
+										<td>{{cp5.field}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!--<div class="col-sm-3 configBox">
+		            <h4 class="textGreen">Saved Configuration</h4>
+		            <div class="col-sm-12">
+		                  
+		            </div>
+		        </div>-->
+			</div>
+			<div class="col-sm-12 pt10">
+			</div>
+		</tab>
+		<tab index="4" heading="On-Site Setting Config">
+			<div class="col-sm-12 tCenter">
+				<h3>On-Site Setting Configuration</h3>
+			</div>
+			<div class="col-sm-12">
+				<div class="col-sm-12">
+					<div class="col-sm-12">
+						<button type="button" class="btn btn-success btn-sm pull-right" style="margin-top : -30px" ng-click="saveOnSiteSettings()"
+						    title="Save On-Site Setting Config">Save Config</button>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-12">
+							<div class="col-sm-12">
+								<h4 class="textGreen">On-Site Settings</h4>
+							</div>
+							<div class="col-sm-12 allowedTypeBox">
+								<div class="col-sm-12 allowedTypeBoxItem">
+									<div class="col-sm-10">
+										Show Check-In All Button on <strong>Update Meeting</strong>
+									</div>
+									<div class="col-sm-2">
+										<span ng-click="onSiteSettingConfigData.showCheckInAllOnUpdateMeeting = !onSiteSettingConfigData.showCheckInAllOnUpdateMeeting" title="" class=" cursor-pointer"><i ng-class="onSiteSettingConfigData.showCheckInAllOnUpdateMeeting ? 'fa fa-check-circle  fa-lg' : 'fa fa-circle-o fa-lg'"></i></span>&nbsp;
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 pt20">
+			</div>
+		</tab>
+	</tabset>
+</div>
+
+
+<div class="col-sm-12" ng-if="showConfigPage && !configPageLoading && !pullRefreshing">
+
+</div>
+<div class="popoverSVNMessage blackBorder p0" id="eventPopOver" ng-show="showVersionMessage">
+	<div class="col-sm-12 p0" ng-style="calendarPopOverClass">
+		<div class="col-sm-12 pt10">
+			<button type="button" class="close" ng-click="closePopOver();" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<p class="boldFont">SVN Info: </p>
+		</div>
+		<div class="col-sm-12">
+			<p ng-repeat="item in versionDataArr"><span class="color-gray"><b>{{item.key}} :</b></span> {{item.value}}</p>
+		</div>
+	</div>
+</div>
+
+<script type="text/ng-template" id="addEventModal.html">
+	<div class="modal-content model-grey">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="!addingEvent && close()"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">Add New Event</h4>
+		</div>
+		<div class="modal-body height-75">
+			<div class="col-sm-12" ng-if="addingEvent">
+				<p class="tCenter m60"><img src="/app/assets/angular/img/loading32.gif" /></p>
+			</div>
+			<div class="col-sm-12" ng-if="!addingEvent">
+				<div class="form-group">
+					<label class="boldFont">Account Code</label>
+					<input type="text" class="form-control" placeholder="Account Code" ng-model="newEvent.accountCode">
+				</div>
+				<div class="form-group">
+					<label class="boldFont">Event Code</label>
+					<input type="text" class="form-control" placeholder="Event Code" ng-model="newEvent.eventCode">
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="addingEvent" ng-click="close()">{{'meetingApp.actions.close'|translate}}</button>
+			<button type="button" class="btn btn-success" ng-click="saveEvent()" ng-disabled="addingEvent">{{'meetingApp.actions.save'|translate}}</button>
+		</div>
+	</div>
+</script>

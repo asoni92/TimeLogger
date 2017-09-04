@@ -1,0 +1,79 @@
+<nav class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="#" class="navbar-brand"><img alt="" ng-if="domainName == 'microsoft'" ng-src="{{logoPath}}"/>
+            <img alt="" ng-if="domainName != 'microsoft'" style="width : 130px; height : 50px;" ng-src="{{logoPath}}"/>
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar">          
+      <ul class="nav navbar-nav navbar-right"> fa-calendar
+          <!--<li class="curved"><button class="btn btn-default" type="submit" ng-click="openAttendeeSearchModal()">Events</button></li>-->
+          <li class="curved" ng-if="false"><button class="btn btn-default" type="submit" ng-click="goToMeetingByLocation()">Meeting By Location</button></li>
+          <li class="curved"><button class="btn btn-default" type="submit" ng-click="openAttendeeSearchModal()">Lookup</button></li>
+          <li class="curved"><button class="btn btn-default" type="submit" ng-click="toSearch()">Attendee Search</button></li>
+          <li class="link" title="Events" ng-if="false"><a ng-click="goToEventList()"> <i class="fa fa-calendar fa-lg"></i></a></li>
+          <li class="link" title="Refresh Data"><a ng-click="refreshCalendar()"><i class="fa fa-refresh fa-lg"></i></a></li>
+          <li class="link" title="Logout"><a logout><i class="fa fa-power-off fa-lg"></i></a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<div class="legends-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h4 class="title font-regular">{{eventObj.eventName}}</h4>
+            </div>
+            <div class="col-sm-6">
+                <div class="color-codes">
+                    <span>Meeting Color Codes</span>
+                    <span class="btn btn-success">SCHEDULED</span>
+                    <span class="btn btn-default">SUBMITTED</span>
+                    <span class="btn btn-warning">PENDING</span>
+                    <span class="btn btn-grey">CHECKEDIN</span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>      
+</div>
+<div class="container" id="mainContainer">
+        <div class="row">
+            <div class="col-sm-8">
+                <p>Click on any open time to schedule a meeting <span class="clr-green"><strong>OR</strong></span> Drag <span id="draggable" class="label label-default cool-event"  data-event='1' data-duration='01:30' >MEETING BLOCK</span> to the grid to block out a time</p>
+                <br>
+                <br>
+                <!--<p><a href="" data-toggle="modal" data-target="#UpdateMeeting">Popup: UPDATE MEETING</a></p>
+                <p><a href="" data-toggle="modal" data-target="#ScheduleMeeting">Popup: SCHEDULE MEETING/CHECK IN</a></p>
+                <p><a href="" data-toggle="modal" data-target="#AttendeeSearch">Popup: ATTENDEE SEARCH</a></p>-->
+            </div>
+            <div class="col-sm-4">&nbsp;</div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="container-fluid calendarLoader" ng-show="eventDataLoading">
+        <img class="p1" src="/app/assets/angular/img/loading32.gif"/>
+    </div> 
+<div class="pull-right" ng-if="!eventDataLoading && isLookUpMode">
+     <span class="boldFont fs16">{{lookUpUser.firstName}}  {{lookUpUser.lastName}}</span>
+    <a title="Close LookUp Mode" ng-click="disableLookUpMode()" class="lookUpClose">     <i class="fa fa-close fa-md"></i></a>
+</div>
+<!---->
+<div class="pull-right" ng-if="!eventDataLoading && userMeetingSchedularMode">
+    <span class="boldFont fs16">{{scheduledMeetingUser.firstName}}  {{scheduledMeetingUser.lastName}}</span>
+    <a title="Close Mode" ng-click="disableUserMeetingSchedularMode()" class="lookUpClose"> <i class="fa fa-close fa-md"></i></a>
+</div>
+<input type="text" class="form-control datePickerInput" ng-model="calendar.date" name="Calendar Date" datepicker-append-to-body="true" datepicker-popup="MM/dd/yyyy" datepicker-options="dateOptions" popup-placement="left-bottom" is-open="openCalendarViewDatePicker.value" ng-change="goToSelectedDate(calendar.date)" close-text="Close">
+<div class="dateListDiv" ng-show="showDateList">
+	<button class="btn btn-primary mr2" ng-repeat="day in allDays" ng-click="goToSelectedDate(day)">{{getFormattedDate(day,'MMM dd')}}</button>
+</div>
+<div class="container-fluid">   
+	<div id='calendar'></div>
+</div>

@@ -1,0 +1,80 @@
+<nav class="navbar navbar-inverse">
+	<div class="container">
+		<div class="navbar-header">
+			<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed"
+			    type="button">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a href="#" class="navbar-brand"><img alt=""
+				ng-if="domainName == 'microsoft'" ng-src="{{logoPath}}" /> <img
+				alt="" ng-if="domainName != 'microsoft'"
+				style="width: 130px; height: 50px;" ng-src="{{logoPath}}" /> </a>
+		</div>
+		<div class="collapse navbar-collapse" id="navbar">
+			<ul class="nav navbar-nav navbar-right">
+				<li class="curved"><button class="btn btn-default" type="submit" ng-click="goToCalendar()">Go To
+						Calendar</button></li>
+				<li class="link" title="Logout"><a logout ng-click="logout()"><i
+						class="fa fa-power-off fa-lg"></i></a></li>
+			</ul>
+		</div>
+		<!--/.nav-collapse -->
+	</div>
+</nav>
+<div class="legends-bar">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<h4 class="title font-regular">{{eventObj.eventName}}</h4>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<input type="text" class="form-control datePickerInput2" ng-model="calendar.date" name="Calendar Date" datepicker-append-to-body="true"
+	    datepicker-popup="MM/dd/yyyy" datepicker-options="dateOptions" popup-placement="right-bottom" is-open="openCalendarViewDatePicker.value"
+	    ng-change="getMeetingByLocation()" close-text="Close">
+	<div class="col-sm-12 pl30">
+		<div class="form-group">
+			<button class="btn" ng-click="toggleCalendar($event)">
+    			<span class="a glyphicon glyphicon-calendar" style="vertical-align:middle"></span>
+  			</button>
+			<span class="fs18 boldFont textGreen pl5">{{getFormattedDate(calendar.date, 'EEEE - MMM dd, yyyy')}}</span>
+		</div>
+	</div>
+	<div class="col-sm-12" ng-if="meetingByLocation.length == 0">
+		<p class="tCenter boldFont">No Record Found!!</p>
+	</div>
+	<div class="col-sm-12" ng-if="meetingByLocation.length > 0">
+		<div class="col-sm-4 custom-pannel" ng-repeat="meeting in meetingByLocation">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">{{meeting.venue}} - {{meeting.locationCode}}</h3>
+				</div>
+				<div class="panel-body">
+					<div ng-repeat="session in meeting.sessions">
+						<p class="time boldFont">{{getTimeFromString(session.startTime)}}</p>
+						<div class="pannel-content">
+							<p class="clr-black boldFont">{{session.sessionTitle}}</p>
+							<div class="list" ng-repeat="reg in session.regAttendees">
+								<div class="pull-left">
+									<p class="">{{reg.firstName}} {{reg.lastName}}</p>
+								</div>
+								<div class="pull-right">
+									<button type="submit" class="btn btn-grey" ng-if="reg.registrationSessionStatus != 'Attended'" ng-click="checkinRegistrationByCode(reg.registrationCode)">Check In</button>
+									<label class="btn btn-default" ng-if="reg.registrationSessionStatus == 'Attended'" disabled>Attended</label>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<button type="submit" class="btn btn-grey" ng-if="session.regAttendees.length > 0" ng-disabled="isCheckInDisable(session)"
+							    ng-click="checkInAll(session.sessionId)">Check In ALL</button>
+						</div>
+						<hr class="solid-green">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

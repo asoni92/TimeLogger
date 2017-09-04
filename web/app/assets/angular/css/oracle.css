@@ -1,0 +1,98 @@
+.companyLogo { 
+    background:#fff url(/app/assets/angular/img/microsoftLogo.png) center center no-repeat; 
+}
+
+.loginScreen {
+    background:#fff url(/app/assets/angular/img/microsoft.png) center center no-repeat; 
+}
+a, .btn {
+    -webkit-transition: 300ms;
+    -moz-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms;
+}
+.btn {
+    border: 0;
+    font-weight: normal;
+    font-family: 'LatoWebMedium';
+    text-transform: uppercase;
+    border-radius: 6px 0 6px 0;
+}
+
+/*
+.mButton {
+    background-color: #127f4f;
+    color: #fff;
+}
+*/
+.color-codes span.btn-success, .color-codes span.btn-success {
+    color: #fff;
+    background-color: #00a85d;
+}
+.btn-success {
+    background-color: #f50000;
+    color: #fff;
+}
+.mButton {
+    background-color: #f50000;
+    color: #fff;
+}
+.btn-default:hover,
+.btn-default:focus{
+    background-color: #666;
+    color: #fff;
+}
+.btn-success:hover,
+.btn-success:focus {
+    background-color: #f50000;
+    color: #fff;
+}
+.btn-warning:hover,
+.btn-warning:focus {
+    background-color: #f50000;
+    color: #fff;
+}
+.btn-grey:hover,
+.btn-grey:focus {
+    background-color: #f50000;
+    color: #fff;
+}
+.btn.disabled,
+.btn[disabled] {
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+.btn-success.disabled:hover,
+.btn-success[disabled]:hover {
+	background-color: #f50000;
+}
+.btn-default.disabled:hover,
+.btn-default[disabled]:hover {
+	background-color: #666;
+}
+.modal-header {
+    border-radius: 6px 6px 0 0 !important;
+    background-color: #f50000 !important;
+}
+.btn-primary {
+    background-color: #f50000;
+    color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:focus{
+    background-color: #f50000;
+    color: #fff;
+}
+.textGreen {
+    color: #f50000;
+}
+hr.solid-green {
+    border-top: 1px solid #f50000 !important;
+    float: left;
+    width: 100%;
+    margin: 10px 0px 10px;
+}
+.registeredAttendeeBox p.selected {
+    background-color: #FA8072;
+}

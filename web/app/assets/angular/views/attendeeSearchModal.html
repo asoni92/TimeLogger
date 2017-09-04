@@ -1,0 +1,43 @@
+<div class="modal-content model-grey">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">{{'meetingApp.attendeeSearch'|translate}}</h4>
+  </div>
+  <div class="modal-body height-75">
+    <p>Enter either First or Last name of the attendee(s) you’re searching for. Results appear in the dropdown below. Select one of those attendees and click <strong>Lookup</strong> to see the meetings that attendee is registered for.</p>
+
+    <h4 class="text-muted font-regular">{{'meetingApp.details'|translate}}</h4>
+
+    <div class="form-group">
+        <label class="boldFont">{{'meetingApp.firstName'|translate}}</label>
+        <input type="text" class="form-control" placeholder="First Name" ng-model="attendeeSearchObject.firstName">
+    </div>
+    <div class="form-group">
+        <label class="boldFont">{{'meetingApp.lastName'|translate}}</label>
+        <input type="text" class="form-control" placeholder="Last Name" ng-model="attendeeSearchObject.lastName">
+    </div>
+    <div class="form-group text-right">
+        <button type="button" class="btn btn-success btn-sm" ng-disabled="loading" ng-click="searchForAttendees()">Search</button>
+    </div>
+
+    <h4 class="text-muted font-regular">{{'meetingApp.attendeeFound'|translate}} ({{registrations.length}})</h4>	  		
+    <p class="tCenter"><img ng-if="loading" src="/app/assets/angular/img/loading32.gif"/></p>
+    <div class="form-group" ng-if="!loading">
+        <div class="dropdown">
+            <button id="dLabel" class="form-control tLeft text-wrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedRegistraion.profile != null ? getRegName() : 'No Attendee Selected'}}<span class="caret customCaret"></span>
+            </button>
+            <ul class="dropdown-menu col-sm-12 m0 p0" aria-labelledby="dLabel">
+                <div class="col-sm-12 m0 p0 dropdownBox">	
+                    <div class="col-sm-12 dropDownSelector text-wrap cursor-pointer p5"  ng-click="selectRegistration(reg)" ng-repeat="reg in registrations">
+                    <span class="col-sm-5 textEllipses">{{reg.profile.firstName}} {{reg.profile.lastName}}</span><span class="col-sm-2 textEllipses">{{reg.profile.organization}}</span><span class="col-sm-5 textEllipses">{{reg.profile.email}}</span>
+                    </div>
+                </div>		
+            </ul>
+        </div>
+    </div>    
+  </div>
+  <div class="modal-footer">		  	
+    <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="loading" ng-click="close()">{{'meetingApp.actions.close'|translate}}</button>
+    <button type="button" class="btn btn-success" ng-disabled="loading" ng-click="lookUp()">{{'meetingApp.actions.lookup'|translate}}</button>
+  </div>
+</div>

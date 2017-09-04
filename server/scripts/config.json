@@ -1,0 +1,22 @@
+{
+    "connConfig": {
+        "client": "mariasql",
+        "debug": false,
+        "connection": {
+            "host": "localhost",
+            "user": "root",
+            "password": "",
+            "db": "timelog",
+            "multipleStatements": true
+        }
+    },
+    "logFile": "/Users/infoobjects/logs/mma_logs.log",
+    "jobInterval": "* * * * *",
+    "queryDebugMode": false,
+    "sessionLevels": [
+        "Scheduled",
+        "CheckedIn",
+        "Pending",
+        "Submitted"
+    ]
+}

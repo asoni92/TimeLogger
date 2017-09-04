@@ -1,0 +1,15 @@
+{
+  "name": "hrmsui",
+  "version": "1.0.0",
+  "description": "a UI project for node solution",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-inject": "^3.0.0"
+  }
+}
