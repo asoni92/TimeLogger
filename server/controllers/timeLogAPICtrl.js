@@ -113,8 +113,34 @@ module.exports = function(app) {
 		}
 		return errorMsg;
 	}
+	
+	 
+     
+	populateUserIdAndProcessRequest = function (req, res, next) {
+	    console.log(req)
+	    try {
+	    	schema.model('User').forge().where({
+				username: req.body.user_name,
+				active: 1
+			}).fetch().then(function (result) {
+				if (result) {
+					var userData = result.toJSON();
+					req.headers.user_id = data.get('id');
+					console.log('User id is '+req.headers.user_id)
+					processRequest(req, res, next);
+				} else {
+					return res.send(getErrorMessage('No record found for following user.'));
+				}
+			}).catch(function (err) {
+				return res.send(getErrorMessage('No record found for following user.'));
+			});
+	    } catch(ex) {
+	    	console.log(ex)
+	    	return res.send(getErrorMessage('No record found for following user.'));
+	    }     
+	}
 
-	controller.processRequest = function(req, res, next) {
+	processRequest = function(req, res, next) {
 		console.log("---------------");
 		console.log(req.body)
 		var teamDomain = req.body.team_domain;

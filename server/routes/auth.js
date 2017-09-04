@@ -5,6 +5,6 @@ module.exports = function (app) {
    
 //    app.post('/auth/authenticate', auth.authenticate);
 //    app.post('/auth/logout', auth.logout);
-     app.post('/api/processRequest', loggerAPIController.processRequest);
+     app.post('/api/processRequest', loggerAPIController.populateUserIdAndProcessRequest);
 
 };
