@@ -134,7 +134,7 @@ module.exports = function(app) {
 			if(code == null || code == '' || code.trim().length == 0) {
 				return res.send(getErrorMessage('No Code Specified.'));
 			} else {
-				
+				deleteLog(req, res, code);
 			}
 		} else if(option.toLowerCase() == 'help') { 
 			return res.send(welcomeMsg);
