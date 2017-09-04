@@ -132,8 +132,14 @@ module.exports = function(app) {
 			} else {
 				var workLogTime = getTimeFromRequest(data[3]);
 				console.log(workLogTime);
-				var description = getDescriptionFromRequest(data[3])
+				var description = getDescriptionFromRequest(data[4])
 				console.log(description)
+				if(workLogTime == null) {
+					return res.send(getErrorMessage('Invalid Time.'));
+				}
+				if(description == null) {
+					return res.send(getErrorMessage('Invalid Description.'));
+				}
 				updateLog(req, res, code, username, workLogTime, description)
 			}
 		} else if (option.toLowerCase() == 'logs') {
