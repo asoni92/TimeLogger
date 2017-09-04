@@ -10,41 +10,103 @@ var logger = require('../lib/Logger.js').logger;
 var config = require('../scripts/config.json')
 var queryDebugMode = config.queryDebugMode;
 
-module.exports = function (app) {
+module.exports = function(app) {
 	var controller = {};
 
-	controller.processRequest = function (req, res, next) {
+	var welcomeMsg = {
+		"mrkdwn" : true,
+		"attachments" : [
+				{
+					"fallback" : "",
+					"text" : "",
+					"fields" : [
+							{
+								"title" : "Add",
+								"value" : "Syntax: --add --WorkTime(in hour, minutes or second(h/m/s)) --'Description'",
+								"short" : false
+							}, {
+								"title" : "--add --5m 'Worked on CMMA App'",
+								"value" : "",
+								"short" : true
+							} ],
+					"color" : "good"
+				},
+				{
+					"fallback" : "",
+					"text" : "",
+					"fields" : [
+							{
+								"title" : "Update",
+								"value" : "Syntax: --update --uniqueCode --WorkTime(in hour, minutes or second(h/m/s)) --'Description'",
+								"short" : false
+							},
+							{
+								"title" : "--update --XX1234 --15m 'Worked on CMMA App Update'",
+								"value" : "",
+								"short" : false
+							} ],
+					"color" : "warning"
+				},
+				{
+					"fallback" : "",
+					"text" : "",
+					"fields" : [ {
+						"title" : "Remove",
+						"value" : "Syntax: --remove --uniqueCode",
+						"short" : false
+					}, {
+						"title" : "--remove --XX1234",
+						"value" : "",
+						"short" : false
+					} ],
+					"color" : "#F35A00"
+				},
+				{
+					"fallback" : "ReferenceError - UI is not defined: https://honeybadger.io/path/to/event/",
+					"text" : "",
+					"fields" : [ {
+						"title" : "Log History",
+						"value" : "Syntax: --logs",
+						"short" : false
+					}, {
+						"title" : "--logs",
+						"value" : "This will show the last 7 days entries.",
+						"short" : false
+					} ],
+					"color" : "#0a4cad"
+				} ]
+	}
+
+	controller.processRequest = function(req, res, next) {
 		console.log("---------------");
 		console.log(req.body)
 		var teamDomain = req.body.team_domain;
 		var username = req.body.user_name;
 		var command = req.body.text;
-		if(command == null || command == '' || command.trim().length == 0) {
+		if (command == null || command == '' || command.trim().length == 0) {
 			//Handle the unwanted exception
 			console.log("---------If--------------")
-			return res.send("No Data Found");
+			return res.send(welcomeMsg);
 		}
 		var code = null;
 		var description = null;
 		var option = null;
 		var descriptionIndex = command.indexOf("'");
 		var data = command.split("--");
-		for(i = 0; i < data.length; i++) {
-			console.log(data[i])
+		if (data.length == 0) {
+			//Handle the error
 		}
-		
-		
-		return res.send(command);
-		if(descriptionIndex > 0) {
-			description = command.substring(descriptionIndex+1, command.lastIndexOf("'"));
-			var remainingString = command.substring(0,descriptionIndex);
-			var data = remainingString.split(" ");
-			console.log(data);
-		} else {
-			
-		}
-	};
+		if (data[0].toLowerCase() == 'add') {
 
+		} else if (data[0].toLowerCase() == 'update') {
+
+		} else if (data[0].toLowerCase() == 'logs') {
+
+		} else if (data[0].toLowerCase() == 'remove') {
+
+		}
+		return res.send(command);
+	};
 
 	return controller;
 }
