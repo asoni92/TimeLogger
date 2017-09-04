@@ -128,7 +128,7 @@ module.exports = function(app) {
 				console.log(savedWork)
 			}).catch(function (err) {
 				console.log("----Error---")
-				comnsole.log(err)
+				console.log(err)
 				return res.status(500).send();
 			});
 		} catch(ex) {
