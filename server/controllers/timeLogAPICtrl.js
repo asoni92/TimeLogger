@@ -96,8 +96,10 @@ module.exports = function(app) {
 		if (data.length == 0) {
 			//Handle the error
 		}
+		console.log('--['+data[0]+']--')
 		if (data[0].toLowerCase() == 'add') {
 			// Do the add operation
+			console.log('Add operation Called')
 			addLog(req, res, next);
 		} else if (data[0].toLowerCase() == 'update') {
 			//do the update operation 
@@ -110,6 +112,7 @@ module.exports = function(app) {
 	};
 	
 	function addLog(req, res, next) {
+		try {
 		var now = moment().unix();
 		var _workLog = {
 				code: '1234',
@@ -122,8 +125,13 @@ module.exports = function(app) {
 			schema.model('WorkLog').forge().save(_workLog).then(function (savedWork) {
 				
 			}).catch(function (err) {
+				console.log("----Error---")
+				comnsole.log(err)
 				return res.status(500).send();
 			});
+		} catch(ex) {
+			console.log(ex)
+		}
 	}
 
 	return controller;
