@@ -160,14 +160,14 @@ module.exports = function(app) {
 			if(code == null || code == '' || code.trim().length == 0) {
 				return res.send(getErrorMessage('No Code Specified.'));
 			} else {
-				retrieveLog(code,username);
+				retrieveLog(req, res, code, username);
 			}
 		} else {
 			return res.send(welcomeMsg);
 		}
 	};
 	
-	function retrieveLog(code, username) {
+	function retrieveLog(req, res, code, username) {
 		var now = moment().unix();
 		try {
 			schema.model('WorkLog').forge().where({
