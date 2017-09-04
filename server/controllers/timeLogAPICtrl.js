@@ -22,6 +22,21 @@ module.exports = function(app) {
 					"text" : "",
 					"fields" : [
 							{
+								"title" : "Get",
+								"value" : "Syntax: --get --uniqueCode",
+								"short" : false
+							}, {
+								"title" : "--get --XX1234'",
+								"value" : "",
+								"short" : true
+							} ],
+					"color" : "#4a4a4a"
+				},
+				{
+					"fallback" : "",
+					"text" : "",
+					"fields" : [
+							{
 								"title" : "Add",
 								"value" : "Syntax: --add --WorkTime(in hour, minutes or second(h/m/s)) --'Description'",
 								"short" : false
