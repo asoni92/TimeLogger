@@ -97,16 +97,16 @@ module.exports = function(app) {
 		if (data.length == 0) {
 			//Handle the error
 		}
-		console.log('--['+data[0]+']--')
-		if (data[0].toLowerCase() == 'add') {
+		console.log('--['+data[1]+']--')
+		if (data[1].toLowerCase() == 'add') {
 			// Do the add operation
 			console.log('Add operation Called')
 			addLog(req, res, next);
-		} else if (data[0].toLowerCase() == 'update') {
+		} else if (data[1].toLowerCase() == 'update') {
 			//do the update operation 
-		} else if (data[0].toLowerCase() == 'logs') {
+		} else if (data[1].toLowerCase() == 'logs') {
 			//do the logs operation
-		} else if (data[0].toLowerCase() == 'remove') {
+		} else if (data[1].toLowerCase() == 'remove') {
 			// do the remove operation
 		}
 		return res.send(command);
