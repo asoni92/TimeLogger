@@ -23,19 +23,18 @@ module.exports = function (app) {
 			//Handle the unwanted exception
 			console.log("---------If--------------")
 			return res.send("No Data Found");
-		} else {
-			console.log("---------Else--------------")
-			try {
-			return res.send(command);
-			} catch(ex) {
-				console.log(ex)
-			}
 		}
-		console.log("---------If/Else end--------------")
 		var code = null;
 		var description = null;
 		var option = null;
 		var descriptionIndex = command.indexOf("'");
+		var data = command.split("--");
+		for(i = 0; i < data.length; i++) {
+			console.log(data[i])
+		}
+		
+		
+		return res.send(command);
 		if(descriptionIndex > 0) {
 			description = command.substring(descriptionIndex+1, command.lastIndexOf("'"));
 			var remainingString = command.substring(0,descriptionIndex);
