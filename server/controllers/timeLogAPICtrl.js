@@ -181,7 +181,6 @@ module.exports = function(app) {
 	
 	getSaveSuccessMsg = function(data, username) {
 		try {
-			data = data.toJSON();
 			var res = { "text": "Record Successfully Created.\n*Details:*\n*User:* "+username+"\n*Code:* "+data.code+"\n*Time Log:* "+data.time};
 			return res;
 		} catch(ex) {
@@ -204,7 +203,8 @@ module.exports = function(app) {
 			}
 			schema.model('WorkLog').forge().save(_workLog).then(function (savedWork) {
 				console.log("Saved Work is ");
-				res.send(getSaveSuccessMsg(savedWork,username));
+				var loggedWork = savedWork.toJSON();
+				return res.send(getSaveSuccessMsg(loggedWork, username));
 			}).catch(function (err) {
 				console.log("----Error---")
 				console.log(err)
