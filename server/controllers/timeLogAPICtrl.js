@@ -26,7 +26,7 @@ module.exports = function(app) {
 								"value" : "Syntax: --add --WorkTime(in hour, minutes or second(h/m/s)) --'Description'",
 								"short" : false
 							}, {
-								"title" : "--add --5m 'Worked on CMMA App'",
+								"title" : "--add --5m --'Worked on CMMA App'",
 								"value" : "",
 								"short" : true
 							} ],
@@ -42,7 +42,7 @@ module.exports = function(app) {
 								"short" : false
 							},
 							{
-								"title" : "--update --XX1234 --15m 'Worked on CMMA App Update'",
+								"title" : "--update --XX1234 --15m --'Worked on CMMA App Update'",
 								"value" : "",
 								"short" : false
 							} ],
@@ -186,7 +186,7 @@ module.exports = function(app) {
 		 	"fields" : [{
 		 		"title" : "User: "+username, "value" : "", "short" : false }, 
 		 		{"title" : "Code: "+data.code, "value" : "", "short" : true},
-		 		{"title" : "Time Log: "+data.time, "value" : "", "short" : true},
+		 		{"title" : "Time Log: "+moment.utc(data.time*1000).format('HH:mm:ss'), "value" : "", "short" : true},
 		 		], "color" : "good"
 		 }] };
 		return res;
