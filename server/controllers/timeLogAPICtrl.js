@@ -129,7 +129,7 @@ module.exports = function(app) {
 		} else {
 			data = data.trim();
 			console.log("Data is "+data);
-			if(data.startsWith("’") && data.endsWith("’")) {
+			if(data.startsWith("‘") && data.endsWith("’")) {
 				console.log("Herreeeeeee")
 				description = data.substring(1, data.length - 1);
 			}
