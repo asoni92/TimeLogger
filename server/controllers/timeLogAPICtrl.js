@@ -99,7 +99,9 @@ module.exports = function(app) {
 		if (option.toLowerCase() == 'add') {
 			// Do the add operation
 			var workLogTime = getTimeFromRequest(data[2]);
+			console.log("----"+workLogTime)
 			var description = getDescriptionFromRequest(data[3])
+			console.log("---------"+description);
 			if(workLogTime == null) {
 				return res.send(welcomeMsg);
 			}
