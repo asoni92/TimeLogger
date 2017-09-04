@@ -64,7 +64,11 @@ module.exports = function (app, cb) {
 
     app.use('/services', express);
     app.use(function (req, res, next) {
-        handleRequest(req, res, next);
+    	 if (!req.headers["access-control-request-method"] && && req.url.indexOf('/api/processRequest') >= 0) {
+    		 populateUserId(req, res, next);
+         } else {
+             handleRequest(req, res, next);
+         }
     });
     
     app.use(bodyParser.urlencoded({
@@ -172,7 +176,29 @@ module.exports = function (app, cb) {
     }
 
     var queryDebugMode = config1.queryDebugMode
-
+    
+    populateUserId = function (req, res, next) {
+        schema = app.get('schema')
+        schema.model('User').forge().where({
+            username: req.body.user_name,
+            active: 1
+        }).query(function (qb) {
+            qb.debug(queryDebugMode)
+        }).fetch().then(function (data) {
+            if (data) {
+                userData = data.toJSON();
+                req.headers.user_id = data.get('id');
+                console.log('User id is '+req.headers.user_id)
+                handleRequest(req, res, next);
+            } else {
+                res.status(301).send("No Page");
+            }
+        }).catch(function (err) {
+            logger.error("Error occurred in verifying user: ", err)
+        })
+    }
+    
+    
     verifyUserAndPortal = function (req, res, next) {
         domain = req.headers["x-requested-with"];
         schema = app.get('schema')
