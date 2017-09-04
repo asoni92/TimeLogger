@@ -176,7 +176,7 @@ module.exports = function(app) {
 			}).fetch().then(function (result) {
 				if (result) {
 					var tmp = result.toJSON();
-					var successMsg = getEntity(loggedWork, username);
+					var successMsg = getEntity(tmp, username);
 					return res.send(successMsg);
 				} else {
 					return res.send(getErrorMessage('No entry found with the given code.'));
