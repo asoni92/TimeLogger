@@ -180,25 +180,29 @@ module.exports = function (app, cb) {
     var queryDebugMode = config1.queryDebugMode
     
     populateUserId = function (req, res, next) {
-        schema = app.get('schema')
-        schema.model('User').forge().where({
-            username: req.body.user_name,
-            active: 1
-        }).query(function (qb) {
-            qb.debug(queryDebugMode)
-        }).fetch().then(function (data) {
-            if (data) {
-                userData = data.toJSON();
-                req.headers.user_id = data.get('id');
-                console.log('User id is '+req.headers.user_id)
-                handleRequest(req, res, next);
-            } else {
-                res.status(301).send("No Page");
-            }
-        }).catch(function (err) {
-        	console.log(err)
-            logger.error("Error occurred in verifying user: ", err)
-        })
+    	try {
+	        schema = app.get('schema')
+	        schema.model('User').forge().where({
+	            username: req.body.user_name,
+	            active: 1
+	        }).query(function (qb) {
+	            qb.debug(queryDebugMode)
+	        }).fetch().then(function (data) {
+	            if (data) {
+	                userData = data.toJSON();
+	                req.headers.user_id = data.get('id');
+	                console.log('User id is '+req.headers.user_id)
+	                handleRequest(req, res, next);
+	            } else {
+	                res.status(301).send("No Page");
+	            }
+	        }).catch(function (err) {
+	        	console.log(err)
+	            logger.error("Error occurred in verifying user: ", err)
+	        })
+    	} catch(ex) {
+    		console.log(ex)
+    	}     
     }
     
     
