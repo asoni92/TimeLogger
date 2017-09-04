@@ -22,5 +22,5 @@ var WorkLog = BaseModel.extend({
 });
 
 module.exports = function (app) {
-    return Bookshelf.model('worklog', WorkLog);
+    return Bookshelf.model('WorkLog', WorkLog);
 };
