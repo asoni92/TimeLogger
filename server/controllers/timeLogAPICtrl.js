@@ -9,6 +9,7 @@ var _ = require('lodash')
 var logger = require('../lib/Logger.js').logger;
 var config = require('../scripts/config.json')
 var queryDebugMode = config.queryDebugMode;
+var uniqid = require('uniqid');
 
 module.exports = function(app) {
 	var controller = {};
@@ -116,7 +117,7 @@ module.exports = function(app) {
 		try {
 		var now = moment().unix();
 		var _workLog = {
-				code: '1234',
+				code: uniqid(),
 				userId: 1,
 				time: 10,
 				dateCreated: now,
