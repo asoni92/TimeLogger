@@ -135,6 +135,7 @@ module.exports = function(app) {
 	}
 	
 	function getTimeFromRequest(data) {
+		try {
 		var time = null;
 		if(data == null || data == '' || data.trim().length == 0) {
 			return null;
@@ -169,6 +170,9 @@ module.exports = function(app) {
 			    }
 			}  
 			return time;
+		}
+		} catch(Ex) {
+			console.log(Ex)
 		}
 	}
 	
