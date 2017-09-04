@@ -141,7 +141,7 @@ module.exports = function(app) {
 			return null;
 		} else {
 			data = data.trim();
-			if(data.toLowerCase.endsWith('h')) {
+			if(data.toLowerCase().endsWith('h')) {
 				var temp = data.substring(0,data.lastIndexOf('h'));
 			    if(temp == null || temp == '' || isNaN(temp)) {
 			    	// Invalid time
@@ -150,7 +150,7 @@ module.exports = function(app) {
 			    	temp = parseFloat(temp);
 			    	time = temp * 60 * 60;
 			    }
-			} else if(data.toLowerCase.endsWith('m')) {
+			} else if(data.toLowerCase().endsWith('m')) {
 				var temp = data.substring(0,data.lastIndexOf('m'));
 			    if(temp == null || temp == '' || isNaN(temp)) {
 			    	// Invalid time
@@ -159,7 +159,7 @@ module.exports = function(app) {
 			    	temp = parseFloat(temp);
 			    	time = temp * 60;
 			    }
-			} else if(data.toLowerCase.endsWith('s')) {
+			} else if(data.toLowerCase().endsWith('s')) {
 				var temp = data.substring(0,data.lastIndexOf('m'));
 			    if(temp == null || temp == '' || isNaN(temp)) {
 			    	// Invalid time
