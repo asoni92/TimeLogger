@@ -204,7 +204,9 @@ module.exports = function(app) {
 			schema.model('WorkLog').forge().save(_workLog).then(function (savedWork) {
 				console.log("Saved Work is ");
 				var loggedWork = savedWork.toJSON();
-				return res.send(getSaveSuccessMsg(loggedWork, username));
+				var successMsg = getSaveSuccessMsg(loggedWork, username);
+				console.log(successMsg)
+				return res.send(successMsg);
 			}).catch(function (err) {
 				console.log("----Error---")
 				console.log(err)
