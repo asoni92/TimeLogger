@@ -180,7 +180,13 @@ module.exports = function(app) {
 	}
 	
 	getSaveSuccessMsg = function(data, username) {
-		var res = { "text": "Record Successfully Created.\n*Details:*\n*User:* "+username+"\n*Code:* "+data.get("code")+"\n*Time Log:* 5h"};		
+		try {
+			data = data.toJSON();
+			var res = { "text": "Record Successfully Created.\n*Details:*\n*User:* "+username+"\n*Code:* "+data.code+"\n*Time Log:* "+data.time};		
+		} catch(ex) {
+			console.log(ex)
+		}
+
 	}
 	
 	function addLog(req, res, workLogTime, description, username) {
