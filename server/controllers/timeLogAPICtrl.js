@@ -125,7 +125,7 @@ module.exports = function(app) {
 			}).fetch().then(function (result) {
 				if (result) {
 					var userData = result.toJSON();
-					req.headers.user_id = data.get('id');
+					req.headers.user_id = userData.get('id');
 					console.log('User id is '+req.headers.user_id)
 					processRequest(req, res, next);
 				} else {
