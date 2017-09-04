@@ -117,8 +117,9 @@ module.exports = function(app) {
 			// do the logs operation
 		} else if (option.toLowerCase() == 'remove') {
 			// do the remove operation
+		} else {
+			return res.send(command);
 		}
-		return res.send(command);
 	};
 	
 	function getDescriptionFromRequest(data) {
