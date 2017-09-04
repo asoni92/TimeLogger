@@ -21,12 +21,13 @@ module.exports = function (app) {
 		var command = req.body.text;
 		if(command == null || command == '' || command.trim().length == 0) {
 			//Handle the unwanted exception
-			res.send("No Data Found");
-			return;
+			console.log("---------If--------------")
+			return res.send("No Data Found");
 		} else {
-			res.send("You send ", command);
-			return;
+			console.log("---------Else--------------")
+			return res.send("You send ", command);
 		}
+		console.log("---------If/Else end--------------")
 		var code = null;
 		var description = null;
 		var option = null;
