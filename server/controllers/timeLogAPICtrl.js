@@ -122,8 +122,10 @@ module.exports = function(app) {
 			// do the logs operation
 		} else if (option.toLowerCase() == 'remove') {
 			// do the remove operation
+		} else if(option.toLowerCase() == 'help') { 
+			return res.send(welcomeMsg);
 		} else {
-			return res.send(errorMsg);
+			return res.send(welcomeMsg);
 		}
 	};
 	
