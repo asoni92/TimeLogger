@@ -4,8 +4,8 @@ var async = require('async');
 
 var BaseModel = require('../models/BaseModel')();
 
-var Track = BaseModel.extend({
-    tableName: 'track',
+var WorkLog = BaseModel.extend({
+    tableName: 'worklog',
 
     // format and parse deflate and inflate JSON data
     format: function (attrs) {
@@ -22,5 +22,5 @@ var Track = BaseModel.extend({
 });
 
 module.exports = function (app) {
-    return Bookshelf.model('Track', Track);
+    return Bookshelf.model('worklog', WorkLog);
 };
