@@ -125,7 +125,17 @@ module.exports = function(app) {
 			}
 			addLog(req, res, workLogTime,description,username);
 		} else if (option.toLowerCase() == 'update') {
-			// do the update operation
+			var code = data[2];
+			console.log(code);
+			if(code == null || code == '' || code.trim().length == 0) {
+				return res.send(getErrorMessage('No Code Specified.'));
+			} else {
+				var workLogTime = getTimeFromRequest(data[3]);
+				console.log(workLogTime);
+				var description = getDescriptionFromRequest(data[3])
+				console.log(description)
+				updateLog(req, res, code, username, workLogTime, description)
+			}
 		} else if (option.toLowerCase() == 'logs') {
 			// do the logs operation
 		} else if (option.toLowerCase() == 'remove') {
@@ -201,7 +211,20 @@ module.exports = function(app) {
 	
 	getSaveSuccessMsg = function(data, username) {
 		var res = { "attachments" : [{
-		 	"fallback" : "", "text" : "Record Successfully Created",
+		 	"fallback" : "", "text" : "Record Successfully Created.",
+		 	"fields" : [{
+		 		"title" : "User: "+username, "value" : "", "short" : false }, 
+		 		{"title" : "Code: "+data.code, "value" : "", "short" : true},
+		 		{"title" : "Time Log: "+moment.utc(data.time*1000).format('HH:mm:ss'), "value" : "", "short" : true},
+		 		{"title" : "Description: "+data.description, "value" : "", "short" : false},
+		 		], "color" : "good"
+		 }] };
+		return res;
+	}
+	
+	getUpdateSuccessMsg = function(data, username) {
+		var res = { "attachments" : [{
+		 	"fallback" : "", "text" : "Record Successfully Updated.",
 		 	"fields" : [{
 		 		"title" : "User: "+username, "value" : "", "short" : false }, 
 		 		{"title" : "Code: "+data.code, "value" : "", "short" : true},
@@ -246,6 +269,46 @@ module.exports = function(app) {
 		} catch(ex) {
 			return res.send(getErrorMessage('Error is logging hours for your work.'));
 		}
+	}
+	
+	function updateLog(req, res, code, username, time, description) {
+		var now = moment().unix();
+		try {
+			schema.model('WorkLog').forge().where({
+				code: code,
+				active: 1
+			}).fetch().then(function (result) {
+				console.log("-----------------------")
+				console.log(result)
+				if (result) {
+					var req = {dateModified: now};
+					if(time != null) {
+						req.time = time;
+					}
+					if(description != null) {
+						req.description = description;
+					}
+					result.save(req, {
+						method: 'update',
+						patch: true,
+						require: false
+					}).then(function (result) {
+						var updatedWork = result.toJSON();
+						var successMsg = getUpdateSuccessMsg(updatedWork, username);
+						return res.send(successMsg);
+					}).catch(function (err) {
+						return res.send(getErrorMessage('Error occurred in deleting the work log entry.'));
+					})
+				} else {
+					return res.send(getErrorMessage('No entry found with the given code.'));
+				}
+			}).catch(function (err) {
+				return res.send(getErrorMessage('Error occurred in deleting the work log entry.'));
+			});
+		} catch(ex) {
+			return res.send(getErrorMessage('Error occurred in deleting the work log entry.'));
+		}		
+		
 	}
 	
 	function deleteLog(req, res, code) {
