@@ -116,7 +116,7 @@ module.exports = function(app) {
 	
 	 
      
-	populateUserIdAndProcessRequest = function (req, res, next) {
+	controller.populateUserIdAndProcessRequest = function (req, res, next) {
 	    console.log(req)
 	    try {
 	    	schema.model('User').forge().where({
