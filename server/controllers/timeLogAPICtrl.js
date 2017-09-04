@@ -78,17 +78,24 @@ module.exports = function(app) {
 				} ]
 	}
 	
-	var errorMsg = {
-			"mrkdwn" : true,
-			"attachments" : [{ "fallback" : "",
-						"text" : "Oops!!! Looks like your request is not correct. Try below command for more help",
-						"fields" : [ {
-							"title" : "/timelog --help",
-							"value" : "",
-							"short" : false
-						}],
-						"color" : "danger"
-					} ]
+	getErrorMessage = function(msg) {
+		var errorMsg = {
+				"mrkdwn" : true,
+				"attachments" : [{ "fallback" : "",
+							"text" : "Oops!!! Looks like your request is not correct. Try below command for more help",
+							"fields" : [ {
+								"title" : "/timelog --help",
+								"value" : "",
+								"short" : false
+							},
+							 {
+								"title" : "",
+								"value" : msg,
+								"short" : false
+							}],
+							"color" : "danger"
+						} ]
+		}
 	}
 
 	controller.processRequest = function(req, res, next) {
@@ -98,22 +105,22 @@ module.exports = function(app) {
 		var username = req.body.user_name;
 		var command = req.body.text;
 		if (command == null || command == '' || command.trim().length == 0) {
-			return res.send(errorMsg);
+			return res.send(getErrorMessage('No Opertion Specified.'));
 		}
 		var data = command.split("--");
-		var option = data[1];
 		if (data.length == 0) {
-			return res.send(errorMsg);
+			return res.send(getErrorMessage('No Opertion Specified.'));
 		}
+		var option = data[1];
 		option = option.trim();
 		if (option.toLowerCase() == 'add') {
 			var workLogTime = getTimeFromRequest(data[2]);
 			var description = getDescriptionFromRequest(data[3])
 			if(workLogTime == null) {
-				return res.send(errorMsg);
+				return res.send(getErrorMessage('Invalid Time.'));
 			}
 			if(description == null) {
-				return res.send(errorMsg);
+				return res.send(getErrorMessage('Invalid Description.'));
 			}
 			addLog(req, res, workLogTime,description,username);
 		} else if (option.toLowerCase() == 'update') {
@@ -121,7 +128,13 @@ module.exports = function(app) {
 		} else if (option.toLowerCase() == 'logs') {
 			// do the logs operation
 		} else if (option.toLowerCase() == 'remove') {
-			// do the remove operation
+			var code = data[2];
+			console.log(code);
+			if(code == null || code == '' || code.trim().length == 0) {
+				return res.send(getErrorMessage('No Code Specified.'));
+			} else {
+				
+			}
 		} else if(option.toLowerCase() == 'help') { 
 			return res.send(welcomeMsg);
 		} else {
@@ -214,11 +227,43 @@ module.exports = function(app) {
 				var successMsg = getSaveSuccessMsg(loggedWork, username);
 				return res.send(successMsg);
 			}).catch(function (err) {
-				return res.send(errorMsg);
+				return res.send(getErrorMessage('Error is logging hours for your work.'));
 			});
 		} catch(ex) {
-			return res.send(errorMsg);
+			return res.send(getErrorMessage('Error is logging hours for your work.'));
 		}
+	}
+	
+	function deleteLog(req, res, code) {
+		var now = moment().unix();
+		try {
+			schema.model('WorkLog').forge().where({
+				code: code,
+				active: 1
+			}).fetch().then(function (result) {
+				if (result) {
+					result.save({
+						active: 0,
+						dateModified: 0
+					}, {
+						method: 'update',
+						patch: true,
+						require: false
+					}).then(function (result) {
+						
+					}).catch(function (err) {
+						
+					})
+				} else {
+					return res.send(getErrorMessage('No entry found with the given code.'));
+				}
+			}).catch(function (err) {
+				return res.send(getErrorMessage('Error is logging hours for your work.'));
+			});
+		} catch(ex) {
+			return res.send(getErrorMessage('Error is logging hours for your work.'));
+		}		
+		
 	}
 
 	return controller;
