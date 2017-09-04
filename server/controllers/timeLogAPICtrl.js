@@ -124,7 +124,8 @@ module.exports = function(app) {
 				active: true
 			}
 			schema.model('WorkLog').forge().save(_workLog).then(function (savedWork) {
-				
+				console.log("Saved Work is ");
+				console.log(savedWork)
 			}).catch(function (err) {
 				console.log("----Error---")
 				comnsole.log(err)
