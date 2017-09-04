@@ -155,10 +155,39 @@ module.exports = function(app) {
 			}
 		} else if(option.toLowerCase() == 'help') { 
 			return res.send(welcomeMsg);
+		} else if(option.toLowerCase() == 'get') { 
+			var code = data[2];
+			if(code == null || code == '' || code.trim().length == 0) {
+				return res.send(getErrorMessage('No Code Specified.'));
+			} else {
+				retrieveLog(code,username);
+			}
 		} else {
 			return res.send(welcomeMsg);
 		}
 	};
+	
+	function retrieveLog(code, username) {
+		var now = moment().unix();
+		try {
+			schema.model('WorkLog').forge().where({
+				code: code,
+				active: 1
+			}).fetch().then(function (result) {
+				if (result) {
+					var tmp = result.toJSON();
+					var successMsg = getEntity(loggedWork, username);
+					return res.send(successMsg);
+				} else {
+					return res.send(getErrorMessage('No entry found with the given code.'));
+				}
+			}).catch(function (err) {
+				return res.send(getErrorMessage('Error occurred while geeting data for given record.'));
+			});
+		} catch(ex) {
+			return res.send(getErrorMessage('Error occurred while geeting data for given record.'));
+		}
+	}
 	
 	function getDescriptionFromRequest(data) {
 		var description = null;
@@ -215,13 +244,26 @@ module.exports = function(app) {
 		}
 	}
 	
+	getEntity = function(data, username) {
+		var res = { "attachments" : [{
+		 	"fallback" : "", "text" : "Following record found with given code: ",
+		 	"fields" : [{
+		 		"title" : "User: "+username, "value" : "", "short" : false }, 
+		 		{"title" : "Code: "+data.code, "value" : "", "short" : true},
+		 		{"title" : "Time Logged: "+moment.utc(data.time*1000).format('HH:mm:ss'), "value" : "", "short" : true},
+		 		{"title" : "Description: "+data.description, "value" : "", "short" : false},
+		 		], "color" : "good"
+		 }] };
+		return res;
+	}
+	
 	getSaveSuccessMsg = function(data, username) {
 		var res = { "attachments" : [{
 		 	"fallback" : "", "text" : "Record Successfully Created.",
 		 	"fields" : [{
 		 		"title" : "User: "+username, "value" : "", "short" : false }, 
 		 		{"title" : "Code: "+data.code, "value" : "", "short" : true},
-		 		{"title" : "Time Log: "+moment.utc(data.time*1000).format('HH:mm:ss'), "value" : "", "short" : true},
+		 		{"title" : "Time Logged: "+moment.utc(data.time*1000).format('HH:mm:ss'), "value" : "", "short" : true},
 		 		{"title" : "Description: "+data.description, "value" : "", "short" : false},
 		 		], "color" : "good"
 		 }] };
@@ -234,7 +276,7 @@ module.exports = function(app) {
 		 	"fields" : [{
 		 		"title" : "User: "+username, "value" : "", "short" : false }, 
 		 		{"title" : "Code: "+data.code, "value" : "", "short" : true},
-		 		{"title" : "Time Log: "+moment.utc(data.time*1000).format('HH:mm:ss'), "value" : "", "short" : true},
+		 		{"title" : "Time Logged: "+moment.utc(data.time*1000).format('HH:mm:ss'), "value" : "", "short" : true},
 		 		{"title" : "Description: "+data.description, "value" : "", "short" : false},
 		 		], "color" : "good"
 		 }] };
@@ -246,7 +288,7 @@ module.exports = function(app) {
 		 	"fallback" : "", "text" : "Record Successfully Deleted",
 		 	"fields" : [
 		 	    {"title" : "Code: "+data.code, "value" : "", "short" : true},
-		 		{"title" : "Time Log: "+moment.utc(data.time*1000).format('HH:mm:ss'), "value" : "", "short" : true},
+		 		{"title" : "Time Logged: "+moment.utc(data.time*1000).format('HH:mm:ss'), "value" : "", "short" : true},
 		 		{"title" : "Description: "+data.description, "value" : "", "short" : false},
 		 		], "color" : "good"
 		 }] };
