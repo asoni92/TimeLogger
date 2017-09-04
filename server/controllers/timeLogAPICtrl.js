@@ -62,7 +62,7 @@ module.exports = function(app) {
 					"color" : "#F35A00"
 				},
 				{
-					"fallback" : "ReferenceError - UI is not defined: https://honeybadger.io/path/to/event/",
+					"fallback" : "",
 					"text" : "",
 					"fields" : [ {
 						"title" : "Log History",
@@ -97,16 +97,34 @@ module.exports = function(app) {
 			//Handle the error
 		}
 		if (data[0].toLowerCase() == 'add') {
-
+			// Do the add operation
+			addLog(req, res, next);
 		} else if (data[0].toLowerCase() == 'update') {
-
+			//do the update operation 
 		} else if (data[0].toLowerCase() == 'logs') {
-
+			//do the logs operation
 		} else if (data[0].toLowerCase() == 'remove') {
-
+			// do the remove operation
 		}
 		return res.send(command);
 	};
+	
+	function addLog(req, res, next) {
+		var now = moment().unix();
+		var _workLog = {
+				code: '1234',
+				userId: 1,
+				time: 10,
+				dateCreated: now,
+				dateModified: now,
+				active: true
+			}
+			schema.model('WorkLog').forge().save(_workLog).then(function (savedWork) {
+				
+			}).catch(function (err) {
+				return res.status(500).send();
+			});
+	}
 
 	return controller;
 }
