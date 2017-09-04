@@ -93,6 +93,7 @@ module.exports = function(app) {
 		var option = null;
 		var descriptionIndex = command.indexOf("'");
 		var data = command.split("--");
+		console.log(data);
 		if (data.length == 0) {
 			//Handle the error
 		}
