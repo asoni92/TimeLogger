@@ -181,13 +181,15 @@ module.exports = function(app) {
 	}
 	
 	getSaveSuccessMsg = function(data, username) {
-		try {
-			var res = { "text": "Record Successfully Created.\n*Details:*\n*User:* "+username+"\n*Code:* "+data.code+"\n*Time Log:* "+data.time};
-			return res;
-		} catch(ex) {
-			console.log(ex)
-		}
-
+		var res = { "attachments" : [{
+		 	"fallback" : "", "text" : "Record Successfully Created",
+		 	"fields" : [{
+		 		"title" : "User: "+username, "value" : "", "short" : false }, 
+		 		{"title" : "Code: "+data.code, "value" : "", "short" : true},
+		 		{"title" : "Time Log: "+data.time, "value" : "", "short" : true},
+		 		], "color" : "good"
+		 }] };
+		return res;
 	}
 	
 	function addLog(req, res, workLogTime, description, username) {
