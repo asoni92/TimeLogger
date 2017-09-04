@@ -25,7 +25,11 @@ module.exports = function (app) {
 			return res.send("No Data Found");
 		} else {
 			console.log("---------Else--------------")
-			return res.send("You send ", command);
+			try {
+			return res.send(command);
+			} catch(ex) {
+				console.log(ex)
+			}
 		}
 		console.log("---------If/Else end--------------")
 		var code = null;
