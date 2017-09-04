@@ -183,7 +183,7 @@ module.exports = function (app, cb) {
     	try {
 	        schema = app.get('schema')
 	        schema.model('User').forge().where({
-	            username: req.body.user_name,
+	            username: req.body.text.user_name,
 	            active: 1
 	        }).query(function (qb) {
 	            qb.debug(queryDebugMode)
