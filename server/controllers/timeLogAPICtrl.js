@@ -110,7 +110,7 @@ module.exports = function(app) {
 			if(description == null) {
 				return res.send(welcomeMsg);
 			}
-			addLog(req, res, workLogTime,description);
+			addLog(req, res, workLogTime,description,username);
 		} else if (option.toLowerCase() == 'update') {
 			// do the update operation
 		} else if (option.toLowerCase() == 'logs') {
@@ -179,7 +179,11 @@ module.exports = function(app) {
 		}
 	}
 	
-	function addLog(req, res, workLogTime, description) {
+	getSaveSuccessMsg = function(data, username) {
+		var res = { "text": "Record Successfully Created.\n*Details:*\n*User:* "+username+"\n*Code:* "+data.get("code")+"\n*Time Log:* 5h"};		
+	}
+	
+	function addLog(req, res, workLogTime, description, username) {
 		try {
 		var now = moment().unix();
 		var _workLog = {
@@ -193,7 +197,7 @@ module.exports = function(app) {
 			}
 			schema.model('WorkLog').forge().save(_workLog).then(function (savedWork) {
 				console.log("Saved Work is ");
-				console.log(savedWork)
+				res.send(getSaveSuccessMsg(savedWork,username))
 			}).catch(function (err) {
 				console.log("----Error---")
 				console.log(err)
