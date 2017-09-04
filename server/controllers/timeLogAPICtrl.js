@@ -96,6 +96,7 @@ module.exports = function(app) {
 							"color" : "danger"
 						} ]
 		}
+		return errorMsg;
 	}
 
 	controller.processRequest = function(req, res, next) {
