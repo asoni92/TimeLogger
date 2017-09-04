@@ -187,6 +187,7 @@ module.exports = function(app) {
 		 		"title" : "User: "+username, "value" : "", "short" : false }, 
 		 		{"title" : "Code: "+data.code, "value" : "", "short" : true},
 		 		{"title" : "Time Log: "+moment.utc(data.time*1000).format('HH:mm:ss'), "value" : "", "short" : true},
+		 		{"title" : "Description: "+data.description, "value" : "", "short" : false},
 		 		], "color" : "good"
 		 }] };
 		return res;
