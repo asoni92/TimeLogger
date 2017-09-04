@@ -64,7 +64,9 @@ module.exports = function (app, cb) {
 
     app.use('/services', express);
     app.use(function (req, res, next) {
+    	console.log(!req.headers["access-control-request-method"] && req.url.indexOf('/api/processRequest') >= 0);
     	 if (!req.headers["access-control-request-method"] && req.url.indexOf('/api/processRequest') >= 0) {
+    		 console.log('Inside')
     		 populateUserId(req, res, next);
          } else {
              handleRequest(req, res, next);
