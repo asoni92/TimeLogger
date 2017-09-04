@@ -196,6 +196,7 @@ module.exports = function (app, cb) {
                 res.status(301).send("No Page");
             }
         }).catch(function (err) {
+        	console.log(err)
             logger.error("Error occurred in verifying user: ", err)
         })
     }
