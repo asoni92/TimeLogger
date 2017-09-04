@@ -77,6 +77,19 @@ module.exports = function(app) {
 					"color" : "#0a4cad"
 				} ]
 	}
+	
+	var errorMsg = {
+			"mrkdwn" : true,
+			"attachments" : [{ "fallback" : "",
+						"text" : "Oops!!! Looks like your request is not correct. Try below command for more help",
+						"fields" : [ {
+							"title" : "/timelog --help",
+							"value" : "",
+							"short" : false
+						}],
+						"color" : "danger"
+					} ]
+	}
 
 	controller.processRequest = function(req, res, next) {
 		console.log("---------------");
@@ -85,30 +98,22 @@ module.exports = function(app) {
 		var username = req.body.user_name;
 		var command = req.body.text;
 		if (command == null || command == '' || command.trim().length == 0) {
-			// Handle the unwanted exception
-			return res.send(welcomeMsg);
+			return res.send(errorMsg);
 		}
 		var data = command.split("--");
-		console.log(data);
 		var option = data[1];
 		if (data.length == 0) {
-			// Handle the error
+			return res.send(errorMsg);
 		}
 		option = option.trim();
-		console.log("option is "+option)
-		console.log('--['+data[2]+']--')
-		console.log('--['+data[3]+']--')
 		if (option.toLowerCase() == 'add') {
-			// Do the add operation
 			var workLogTime = getTimeFromRequest(data[2]);
-			console.log("----"+workLogTime)
 			var description = getDescriptionFromRequest(data[3])
-			console.log("---------"+description);
 			if(workLogTime == null) {
-				return res.send(welcomeMsg);
+				return res.send(errorMsg);
 			}
 			if(description == null) {
-				return res.send(welcomeMsg);
+				return res.send(errorMsg);
 			}
 			addLog(req, res, workLogTime,description,username);
 		} else if (option.toLowerCase() == 'update') {
@@ -118,20 +123,17 @@ module.exports = function(app) {
 		} else if (option.toLowerCase() == 'remove') {
 			// do the remove operation
 		} else {
-			return res.send(command);
+			return res.send(errorMsg);
 		}
 	};
 	
 	function getDescriptionFromRequest(data) {
 		var description = null;
 		if(data == null || data == '' || data.trim().length == 0) {
-			console.log("Nulllllllll")
 			return null;
 		} else {
 			data = data.trim();
-			console.log("Data is "+data);
 			if(data.startsWith("‘") && data.endsWith("’")) {
-				console.log("Herreeeeeee")
 				description = data.substring(1, data.length - 1);
 			}
 			return description;
@@ -206,18 +208,14 @@ module.exports = function(app) {
 				description: description
 			}
 			schema.model('WorkLog').forge().save(_workLog).then(function (savedWork) {
-				console.log("Saved Work is ");
 				var loggedWork = savedWork.toJSON();
 				var successMsg = getSaveSuccessMsg(loggedWork, username);
-				console.log(successMsg)
 				return res.send(successMsg);
 			}).catch(function (err) {
-				console.log("----Error---")
-				console.log(err)
-				return res.status(500).send();
+				return res.send(errorMsg);
 			});
 		} catch(ex) {
-			console.log(ex)
+			return res.send(errorMsg);
 		}
 	}
 
