@@ -94,6 +94,8 @@ module.exports = function(app) {
 		if (data.length == 0) {
 			// Handle the error
 		}
+		option = option.trim();
+		console.log("option is "+option)
 		console.log('--['+data[2]+']--')
 		console.log('--['+data[3]+']--')
 		if (option.toLowerCase() == 'add') {
