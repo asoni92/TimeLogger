@@ -154,6 +154,7 @@ module.exports = function(app) {
 		if (data.length == 0) {
 			return res.send(getErrorMessage('No Opertion Specified.'));
 		}
+		console.log()
 		var option = data[1];
 		option = option.trim();
 		if (option.toLowerCase() == 'add') {
@@ -436,6 +437,7 @@ module.exports = function(app) {
 						var successMsg = getUpdateSuccessMsg(updatedWork, username);
 						return res.send(successMsg);
 					}).catch(function (err) {
+						console.log(err)
 						return res.send(getErrorMessage('Error occurred in deleting the work log entry.'));
 					})
 				} else {
