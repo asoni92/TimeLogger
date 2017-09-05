@@ -409,8 +409,8 @@ module.exports = function(app) {
 		}
 	}
 	
-	function updateLog(req, res, code, username, time, description) {
-		console.log(req)
+	function updateLog(request, res, code, username, time, description) {
+		console.log(request)
 		var now = moment().unix();
 		try {
 			schema.model('WorkLog').forge().where({
