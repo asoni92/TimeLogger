@@ -226,11 +226,11 @@ module.exports = function(app) {
 				var msg = "";
 				var totalTime = 0;
 				async.mapSeries(data.toJSON(), function (log, cb) {
-					msg = msg + "User: "+username+"     Code: "+log.code+"     Logged Time: "+moment.utc(log.time*1000).format('HH:mm:ss')+"     Description: "+log.description+"\n";
+					msg = msg + "User: "+username+"     Code: "+log.code+"     Logged Time: "+secondsToHMS(log.time*1000)+"     Description: "+log.description+"\n";
 					totalTime = totalTime + log.time;
 					cb();
 				}, function (err, result) {
-					response.attachments[0].fields[0].value = moment.utc(totalTime*1000).format('HH:mm:ss');
+					response.attachments[0].fields[0].value = secondsToHMS(totalTime*1000);
 					var tmp = { "title" : "", "value" : msg, "short" : true };
 					response.attachments[0].fields.push(tmp);
 					return res.send(response);
@@ -239,6 +239,18 @@ module.exports = function(app) {
 		}).catch(function (err) {
 			console.log("Error Occured");
 		})
+	}
+	
+	function secondsToHMS(d) {
+	    d = Number(d);
+	    var h = Math.floor(d / 3600);
+	    var m = Math.floor(d % 3600 / 60);
+	    var s = Math.floor(d % 3600 % 60);
+
+	    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+	    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+	    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+	    return hDisplay + mDisplay + sDisplay; 
 	}
 	
 	function retrieveLog(req, res, code, username) {
