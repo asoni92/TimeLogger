@@ -212,7 +212,7 @@ module.exports = function(app) {
 	
 	function myTask(req, res, next, username) {
 		var response = { "attachments" : [{ "fallback" : "", "text" : "Following are your log enteries: ",
-							"fields" : [ { "title" : "/timelog --help", "value" : "", "short" : false}],
+							"fields" : [ { "title" : "Total Logged Time: ", "value" : "", "short" : false}],
 							"color" : "danger"
 						} ]
 		}
@@ -220,14 +220,17 @@ module.exports = function(app) {
 			userId: req.headers.user_id,
 			active: 1
 		}).fetchAll().then(function (data) {
-			if (data == null) {
+			if (data == null || data.length == 0) {
 				return res.send(getErrorMessage('No logs found.'));
 			} else {
 				var msg = "";
+				var totalTime = 0;
 				async.mapSeries(data.toJSON(), function (log, cb) {
 					msg = msg + "User: "+username+"     Code: "+log.code+"     Logged Time: "+moment.utc(log.time*1000).format('HH:mm:ss')+"     Description: "+log.description+"\n";
+					totalTime = totalTime + log.time;
 					cb();
 				}, function (err, result) {
+					response.attachments[0].fields[0].value = totalTime;
 					var tmp = { "title" : "", "value" : msg, "short" : true };
 					response.attachments[0].fields.push(tmp);
 					return res.send(response);
