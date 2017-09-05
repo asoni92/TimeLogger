@@ -444,6 +444,8 @@ module.exports = function(app) {
 					return res.send(getErrorMessage('No entry found with the given code.'));
 				}
 			}).catch(function (err) {
+				console.log("--------------------------")
+				console.log(err)
 				return res.send(getErrorMessage('Error occurred in deleting the work log entry.'));
 			});
 		} catch(ex) {
