@@ -230,7 +230,7 @@ module.exports = function(app) {
 					totalTime = totalTime + log.time;
 					cb();
 				}, function (err, result) {
-					response.attachments[0].fields[0].value = totalTime;
+					response.attachments[0].fields[0].value = moment.utc(totalTime*1000).format('HH:mm:ss');
 					var tmp = { "title" : "", "value" : msg, "short" : true };
 					response.attachments[0].fields.push(tmp);
 					return res.send(response);
