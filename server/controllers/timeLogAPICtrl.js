@@ -227,7 +227,7 @@ module.exports = function(app) {
 				var totalTime = 0;
 				async.mapSeries(data.toJSON(), function (log, cb) {
 					msg = msg + "User: "+username+"     Code: "+log.code+"     Logged Time: "+secondsToHMS(log.time)+"     Description: "+log.description+"\n";
-					totalTime = totalTime + log.time;
+					totalTime = totalTime + parseFloat(log.time);
 					console.log(totalTime);
 					cb();
 				}, function (err, result) {
