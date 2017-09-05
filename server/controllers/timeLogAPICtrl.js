@@ -447,6 +447,7 @@ module.exports = function(app) {
 				return res.send(getErrorMessage('Error occurred in deleting the work log entry.'));
 			});
 		} catch(ex) {
+			console.log(ex);
 			return res.send(getErrorMessage('Error occurred in deleting the work log entry.'));
 		}		
 		
