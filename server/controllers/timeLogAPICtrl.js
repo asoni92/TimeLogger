@@ -126,7 +126,6 @@ module.exports = function(app) {
 				if (result) {
 					var userData = result.toJSON();
 					req.headers.user_id = result.get('id');
-					console.log('User id is '+req.headers.user_id)
 					processRequest(req, res, next);
 				} else {
 					return res.send(getErrorMessage('No record found for following user3.'));
@@ -372,6 +371,10 @@ module.exports = function(app) {
 				console.log("-----------------------")
 				console.log(result)
 				if (result) {
+					var tmp = result.toJSON();
+					if(tmp.userId != req.headers.user_id) {
+						return res.send(getErrorMessage('You are not authorised to update this entry.'));
+					}
 					var req = {dateModified: now};
 					if(time != null) {
 						req.time = time;
@@ -412,6 +415,10 @@ module.exports = function(app) {
 				console.log("-----------------------")
 				console.log(result)
 				if (result) {
+					var tmp = result.toJSON();
+					if(tmp.userId != req.headers.user_id) {
+						return res.send(getErrorMessage('You are not authorised to update this entry.'));
+					}
 					result.save({
 						active: 0,
 						dateModified: now
