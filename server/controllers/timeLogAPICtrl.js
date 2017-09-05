@@ -418,6 +418,7 @@ module.exports = function(app) {
 				console.log(result)
 				if (result) {
 					var tmp = result.toJSON();
+					console.log(req)
 					if(tmp.userId != req.headers.user_id) {
 						return res.send(getErrorMessage('You are not authorised to update this entry.'));
 					}
