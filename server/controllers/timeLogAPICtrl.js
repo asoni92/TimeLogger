@@ -315,7 +315,7 @@ module.exports = function(app) {
 			    	time = temp * 60;
 			    }
 			} else if(data.toLowerCase().endsWith('s')) {
-				var temp = data.substring(0,data.lastIndexOf('m'));
+				var temp = data.substring(0,data.lastIndexOf('s'));
 			    if(temp == null || temp == '' || isNaN(temp)) {
 			    	// Invalid time
 			    	return time;
