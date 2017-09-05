@@ -342,7 +342,7 @@ module.exports = function(app) {
 		var now = moment().unix();
 		var _workLog = {
 				code: uniqid(),
-				userId: 1,
+				userId: req.headers.user_id,
 				time: workLogTime,
 				dateCreated: now,
 				dateModified: now,
