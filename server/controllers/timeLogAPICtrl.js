@@ -185,7 +185,7 @@ module.exports = function(app) {
 				}
 				console.log("---Req---")
 				console.log(req);
-				updateLog(req, res, code, username, workLogTime, description)
+				updateLog(req, res, code, username, workLogTime, description, req.headers.user_id)
 			}
 		} else if (option.toLowerCase() == 'logs') {
 			myTask(req, res, next, username);
@@ -409,8 +409,8 @@ module.exports = function(app) {
 		}
 	}
 	
-	function updateLog(request, res, code, username, time, description) {
-		console.log(request)
+	function updateLog(request, res, code, username, time, description, userId) {
+		console.log(userId)
 		var now = moment().unix();
 		try {
 			schema.model('WorkLog').forge().where({
@@ -422,7 +422,7 @@ module.exports = function(app) {
 				if (result) {
 					var tmp = result.toJSON();
 					console.log(req)
-					if(tmp.userId != req.headers.user_id) {
+					if(tmp.userId != userId) {
 						return res.send(getErrorMessage('You are not authorised to update this entry.'));
 					}
 					var req = {dateModified: now};
