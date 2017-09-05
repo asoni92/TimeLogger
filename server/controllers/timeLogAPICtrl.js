@@ -128,16 +128,16 @@ module.exports = function(app) {
 					req.headers.user_id = result.get('id');
 					processRequest(req, res, next);
 				} else {
-					return res.send(getErrorMessage('No record found for following user3.'));
+					return res.send(getErrorMessage('Seems like you are not registered for this app.'));
 				}
 			}).catch(function (err) {
 				console.log("-------")
 				console.log(err)
-				return res.send(getErrorMessage('No record found for following user2.'));
+				return res.send(getErrorMessage('Seems like you are not registered for this app.'));
 			});
 	    } catch(ex) {
 	    	console.log(ex)
-	    	return res.send(getErrorMessage('No record found for following user 1.'));
+	    	return res.send(getErrorMessage('Seems like you are not registered for this app.'));
 	    }     
 	}
 
