@@ -226,11 +226,11 @@ module.exports = function(app) {
 				var msg = "";
 				var totalTime = 0;
 				async.mapSeries(data.toJSON(), function (log, cb) {
-					msg = msg + "User: "+username+"     Code: "+log.code+"     Logged Time: "+secondsToHMS(log.time*1000)+"     Description: "+log.description+"\n";
+					msg = msg + "User: "+username+"     Code: "+log.code+"     Logged Time: "+secondsToHMS(log.time)+"     Description: "+log.description+"\n";
 					totalTime = totalTime + log.time;
 					cb();
 				}, function (err, result) {
-					response.attachments[0].fields[0].value = secondsToHMS(totalTime*1000);
+					response.attachments[0].fields[0].value = secondsToHMS(totalTime);
 					var tmp = { "title" : "", "value" : msg, "short" : true };
 					response.attachments[0].fields.push(tmp);
 					return res.send(response);
