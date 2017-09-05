@@ -228,6 +228,7 @@ module.exports = function(app) {
 				async.mapSeries(data.toJSON(), function (log, cb) {
 					msg = msg + "User: "+username+"     Code: "+log.code+"     Logged Time: "+secondsToHMS(log.time)+"     Description: "+log.description+"\n";
 					totalTime = totalTime + log.time;
+					console.log(totalTime);
 					cb();
 				}, function (err, result) {
 					response.attachments[0].fields[0].value = secondsToHMS(totalTime);
