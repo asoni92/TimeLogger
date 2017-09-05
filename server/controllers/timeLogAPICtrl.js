@@ -183,6 +183,8 @@ module.exports = function(app) {
 				if(description == null) {
 					return res.send(getErrorMessage('Invalid Description.'));
 				}
+				console.log("---Req---")
+				console.log(req);
 				updateLog(req, res, code, username, workLogTime, description)
 			}
 		} else if (option.toLowerCase() == 'logs') {
