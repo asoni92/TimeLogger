@@ -216,7 +216,7 @@ module.exports = function(app) {
 	function myTask(req, res, next, username) {
 		var response = { "attachments" : [{ "fallback" : "", "text" : "Following are your log enteries: ",
 							"fields" : [ { "title" : "Total Logged Time: ", "value" : "", "short" : false}],
-							"color" : "#2fb36d"
+							"color" : "#0a4cad"
 						} ]
 		}
 		schema.model('WorkLog').forge().where({
