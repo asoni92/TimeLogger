@@ -286,7 +286,7 @@ module.exports = function(app) {
 		} else {
 			data = data.trim();
 			console.log("-------------------------------->"+data)
-			if(data.startsWith("‘") && data.endsWith("’")) {
+			if((data.startsWith("‘") && data.endsWith("’"))  || (data.startsWith("'") && data.endsWith("'"))) {
 				description = data.substring(1, data.length - 1);
 			}
 			return description;
