@@ -16,13 +16,13 @@
 <div ui-view="">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-5">
+			<div class="col-sm-5" ng-if="showPieChart">
 				<div class="col-sm-12">
 					<a>Option 1 </a> <a>Option 2 </a> <a>Option 3 </a>
 				</div>
 				<nvd3 options="options" data="data"></nvd3>
 			</div>
-			<div class="col-sm-7">
+			<div class="col-sm-7" ng-if="showAreaChart">
 				<div class="col-sm-12">
 					<a>Option 1 </a> <a>Option 2 </a> <a>Option 3 </a>
 				</div>
