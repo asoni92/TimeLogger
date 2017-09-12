@@ -79,13 +79,14 @@ var HomeCtrl = concurApp.controller('HomeCtrl', [
 					})
 
 				}
-				console.log(otData)
+				
 				$scope.data2 = 	[{"key" : "Other Task" , "values" : otData },
 					               {   "key" : "New Development" , "values" : dtData },
 //					               {   "key" : "Incremental Development" ,	"values" : idData },
 					               {   "key" : "Miscellaneous Activities" , "values" : maData },
 					               {   "key" : "Sustaining Task" , "values" : stData }
 					           ];
+				console.log($scope.data2)
 				$scope.showAreaChart = true;
 			}
 
