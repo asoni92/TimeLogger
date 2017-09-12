@@ -386,6 +386,22 @@ module.exports = function(app) {
 		return res;
 	}
 	
+	function getTaskType(description) {
+		if(description.toUpperCase().startsWith('DT-')) {
+			return "DT";
+		} else if(description.toUpperCase().startsWith('ID-')) {
+			return "ID";
+		} else if(description.toUpperCase().startsWith('MA-')) {
+			return "MA";
+		} else if(description.toUpperCase().startsWith('ST-')) {
+			return "ST";
+		} else if(description.toUpperCase().startsWith('OT-')) {
+			return "OT";
+		} else {
+			return "OT";
+		}
+	}
+	
 	function addLog(req, res, workLogTime, description, username) {
 		try {
 		var now = moment().unix();
@@ -396,7 +412,8 @@ module.exports = function(app) {
 				dateCreated: now,
 				dateModified: now,
 				active: true,
-				description: description
+				description: description,
+				type : getTaskType(description)
 			}
 			schema.model('WorkLog').forge().save(_workLog).then(function (savedWork) {
 				var loggedWork = savedWork.toJSON();
@@ -499,6 +516,52 @@ module.exports = function(app) {
 		}		
 		
 	}
-
+	
+	
+	
+	/*   --------------------------------------Dashboard Controller-------------------------------------- */
+	controller.getLoggerData = function (req, res, next) {
+		var startDate = moment().startOf('day').unix();
+		var endDate = moment().unix();
+		var queryData = [];
+		var query = 'active = 1';
+		if(req.query.userId != null) {
+			query = query + ' and userId in ? ';
+			queryData.push(req.query.userId);
+		}
+		if(req.query.timePeriod != null) {
+			if(req.query.timePeriod == 'Week') {
+				startDate = moment().subtract(7,'d').unix();
+			} else if(req.query.timePeriod == 'Month') {
+				startDate = moment().subtract(30,'d').unix();
+			} else if(req.query.timePeriod == 'Day') {
+				startDate = moment().startOf('day').unix();
+			} else if(req.query.timePeriod == 'Quarter') {
+				startDate = moment().subtract(90,'d').unix();
+			} else if(req.query.timePeriod == 'HalfYear') {
+				startDate = moment().subtract(180,'d').unix();
+			} else if(req.query.timePeriod == 'Year') {
+				startDate = moment().subtract(365,'d').unix();
+			}
+			query = query + ' and dateCreated >=  ? and dateCreated <= ? ';
+			queryData.push(startDate);
+			queryData.push(endDate);
+			console.log(query);
+			console.log(queryData);
+		}
+		schema.model('WorkLog').forge().query(function (qb) {
+			qb.whereRaw(query, queryData)
+		}).fetchAll().then(function (result) {
+			if (result == null) {
+				result = [];
+			}
+			return res.jsonp({
+				"data": result.toJSON()
+			});
+		}).catch(function (err) {
+			return res.status(500).send();
+		});
+	}
+	
 	return controller;
 }

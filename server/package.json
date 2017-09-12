@@ -41,9 +41,9 @@
     "slack-node": "^0.1.8",
     "sprintf-js": "^1.0.3",
     "underscore": "^1.8.3",
+    "uniqid": "^4.1.1",
     "util": "^0.10.3",
     "websocket": "^1.0.24",
-    "uniqid": "^4.1.1",
     "winston": "^2.3.1"
   }
 }

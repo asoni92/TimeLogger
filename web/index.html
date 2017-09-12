@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Meeting App</title>
+    <title>Certain Time Logger</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
@@ -26,6 +26,7 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/multiple-select/1.2.0/multiple-select.min.css' rel='stylesheet' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.buttons.css' rel='stylesheet' />
     <link rel="stylesheet" href="/app/assets/angular/css/library/ui-grid.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css"/>  
     
     <script src="/app/assets/angular/libs/jquery.js"></script>
 	<script src="/app/assets/angular/libs/jquery-ui.js"></script>
@@ -73,6 +74,9 @@
     <script type="text/javascript" src="/app/assets/angular/libs/ng-file-upload.min.js"></script>
     <script type="text/javascript" src="/app/assets/angular/libs/ng-file-upload.min.js"></script>
     <script type="text/javascript" src="/app/assets/angular/libs/autocomplete-multiselect.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.5/angular-nvd3.min.js"></script>
     
     <!-- Injection Module -->
     <script src="/app/appModule/app.js"></script>
@@ -82,32 +86,14 @@
     <script src="/app/assets/angular/js/services/commonUtils/GlobalVariableService.js"></script>
     <script src="/app/assets/angular/js/services/commonUtils/GlobalMethodService.js"></script>
     <script src="/app/assets/angular/js/controllers/LoginCtrl.js"></script>
-    <script src="/app/assets/angular/js/controllers/EventCtrl.js"></script>
-    <script src="/app/assets/angular/js/controllers/LogoutCtrl.js"></script>
+    <script src="/app/assets/angular/js/factory/APIFactory.js"></script>
+    
     
     <script src="/app/appModule/config/routeConfig.js"></script>
-    <script src="/app/assets/angular/js/factory/AuthFctry.js"></script>
-    <script src="/app/assets/angular/js/factory/SessionsFactory.js"></script>
-    <script src="/app/assets/angular/js/factory/CalendarFctry.js"></script>
-    <script src="/app/assets/angular/js/factory/SearchFctry.js"></script>
-    <script src="/app/assets/angular/js/factory/meetingInfoFctry.js"></script>
-    <script src="/app/assets/angular/js/controllers/CalendarCtrl.js"></script>
-    <script src="/app/assets/angular/js/controllers/CheckInCtrl.js"></script>
-    <script src="/app/assets/angular/js/controllers/SetupCtrl.js"></script>
-    <script src="/app/assets/angular/js/controllers/configurableQuestions.js"></script>
-    <script src="/app/assets/angular/js/controllers/AttendeeSearchCtrl.js"></script>
-    <script src="/app/assets/angular/js/controllers/RegCodeLookUpCtrl.js"></script>
-    <script src="/app/assets/angular/js/controllers/MeetingByLocationCtrl.js"></script>
-    <script src="/app/assets/angular/js/controllers/UpdateMeetingCtrl.js"></script>
-    <script src="/app/assets/angular/js/controllers/DemoRequest.js"></script>
-    <!--<script src="/app/assets/angular/js/controllers/DiscoveryQuestionsCtrl.js"></script>-->
     <script src="/app/assets/angular/js/controllers/HomeCtrl.js"></script>
-    <script src="/app/assets/angular/js/controllers/SearchCtrl.js"></script>
-    <script src="/app/assets/angular/js/controllers/PullRefreshCtrl.js"></script>
     <script src="/app/assets/angular/js/directives/ngDropdownMultiselect.js"></script>
     <script src="/app/appModule/run/AppRun.js"></script>
     <script src="/app/appModule/interceptor/RequestInterceptor.js"></script>
-    <!--<script src="/app/appModule/settings/Settings.js"></script>-->
     <!--endinject-->
 
 </body>
