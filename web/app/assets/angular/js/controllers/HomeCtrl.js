@@ -74,7 +74,7 @@ var HomeCtrl = concurApp.controller('HomeCtrl', [
 						} else if (v.type == 'MA') {
 							maData.push([parseInt(v.dateCreated) * 1000, parseInt(v.time)])
 						} else if (v.type == 'ST') {
-							stData.push([parseInt(v.dateCreated) * 1000, parseInt(v.time)])
+							stData.push(()[parseInt(v.dateCreated) * 1000, parseInt(v.time)]))
 						}
 					})
 
