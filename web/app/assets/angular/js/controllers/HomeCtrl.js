@@ -84,7 +84,7 @@ var HomeCtrl = concurApp.controller('HomeCtrl', [
 //					               {   "key" : "New Development" , "values" : dtData },
 //					               {   "key" : "Incremental Development" ,	"values" : idData },
 //					               {   "key" : "Miscellaneous Activities" , "values" : maData },
-//					               {   "key" : "Sustaining Task" , "values" : stData }
+					               {   "key" : "Sustaining Task" , "values" : stData }
 					           ];
 				console.log($scope.data2)
 				$scope.showAreaChart = true;
