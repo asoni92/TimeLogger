@@ -1142,6 +1142,10 @@ body {
     background: #de2f18;
     border-color: #be2815;
 }
+.tableData {
+	max-height: 600px;
+    overflow-y: auto;
+}
 /*
 .fc-resource-area {
     width : 220px !important;
