@@ -5,7 +5,8 @@ concurApp.factory('APIFactory', ['$http', '$resource', '$q', 'localStorageServic
         action: '@action',
     },
     {
-        'getLoggerData': { method: 'GET', params: { action: 'getLoggerData' }, isArray: false }
+        'getLoggerData': { method: 'GET', params: { action: 'getLoggerData' }, isArray: false },
+        'getUserData': { method: 'GET', params: { action: 'getUserData' }, isArray: true }
     })
 
     var _getLoggerData = function (parms) {
@@ -21,6 +22,20 @@ concurApp.factory('APIFactory', ['$http', '$resource', '$q', 'localStorageServic
         return deferred.promise;
     }
     
+    var _getUserData = function (parms) {
+        var deferred = $q.defer();
+        resource.getUserData(parms,
+            function (response) {
+                deferred.resolve(response);
+            },
+            function (response) {
+                deferred.reject(response);
+            });
+
+        return deferred.promise;
+    }
+    
     api.getLoggerData = _getLoggerData;
+    api.getUserData = _getUserData;
     return api;
 }]);

@@ -16,61 +16,73 @@
 <div ui-view="">
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-5" ng-if="showPieChart">
-				<div class="col-sm-12">
-					<a>Option 1 </a> <a>Option 2 </a> <a>Option 3 </a>
-				</div>
-				<nvd3 options="options" data="data"></nvd3>
-			</div>
-			<div class="col-sm-7" ng-if="showAreaChart">
-				<div class="col-sm-12">
-					<a>Option 1 </a> <a>Option 2 </a> <a>Option 3 </a>
-				</div>
-				<nvd3 options="options2" data="data2"></nvd3>
-			</div>
 			<div class="col-sm-12">
-				<table class="table">
-					<thead class="thead-inverse">
-						<tr>
-							<th>#</th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Username</th>
-							<th>Logged Time</th>
-							<th>Type</th>
-							<th>Description</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td>@mdo</td>
-							<td>5h</td>
-							<td>Dev-Task</td>
-							<td>Session Ui Polish</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Jacob</td>
-							<td>Thornton</td>
-							<td>@fat</td>
-							<td>55m</td>
-							<td>Enhancements</td>
-							<td>Agenda</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Larry</td>
-							<td>the Bird</td>
-							<td>@twitter</td>
-							<td>25s</td>
-							<td>Code Review</td>
-							<td>Check In</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="panel panel-primary">
+      				<div class="panel-heading">Filter Records : </div>
+      				<div class="panel-body form-inline">
+      					<div class="col-sm-3 dropdown">
+							<div class="col-sm-12 p0" dropdown>
+		     					<a class="btn btn-primary btn-sm dropdown-toggle col-sm-10" dropdown-toggle style="text-transform: none">
+		        					{{filterOption.user != null ?  filterOption.user.username : 'Select User:'}} <i class="fa fa-user fa-lg ml5 color-white"></i></a>
+		      					
+							    <ul class="dropdown-menu downloadDropDown p10 pt0" role="menu"  style="padding-left: 15px;  padding-right: 15px"> <!-- , padding-right: 15px -->
+							    	<li ng-repeat="user in users" ng-click="changeUser(user)">{{user.firstName}} {{user.lastName}} (@{{user.username}})</li>
+							    </ul>
+							</div>
+						</div>
+						<div class="col-sm-3 dropdown">
+							<div class="col-sm-12 p0" dropdown>
+		     					 <a class="btn btn-primary btn-sm dropdown-toggle col-sm-10" dropdown-toggle style="text-transform: none">
+		        					{{filterOption.interval != null ?  filterOption.interval.value : 'Select Interval:'}} <i class="fa fa-user fa-lg ml5 color-white"></i></a>
+		      					
+							    <ul class="dropdown-menu downloadDropDown p10 pt0" role="menu"  style="padding-left: 15px;  padding-right: 15px">
+							    	<li ng-repeat="option in intervalOptions" ng-click="changeInterval(option)">{{option.value}}</li>
+							    </ul>
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<a style="cursor : pointer" ng-click="filterData()"><i class="fa fa-filter" aria-hidden="true"></i>Filter Records</a>&nbsp;&nbsp;
+							<a style="cursor : pointer" ng-click="clearFilter()"><i class="fa fa-close" aria-hidden="true"></i>Clear Filter</a>
+						</div>
+      				</div>
+    			</div>
+    			<div class="panel panel-primary">
+      				<div class="panel-heading">Log Records : </div>
+      				<div class="panel-body form-inline">
+      					<div class="col-sm-5" ng-if="showPieChart">
+							<nvd3 options="options" data="data"></nvd3>
+						</div>
+						<div class="col-sm-7" ng-if="showAreaChart">
+							<nvd3 options="options2" data="data2"></nvd3>
+						</div>
+						<div class="col-sm-12" ng-show="showTable">
+							<table class="table">
+								<thead class="thead-inverse">
+									<tr>
+										<th>#</th>
+										<th>First Name</th>
+										<th>Last Name</th>
+										<th>Username</th>
+										<th>Logged Time</th>
+										<th>Type</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="row in tableData track by $index">
+										<th scope="row">{{$index + 1}}</th>
+										<td>{{getUserById(row.userId).firstName}}</td>
+										<td>{{getUserById(row.userId).lastName}}</td>
+										<td>{{getUserById(row.userId).username}}</td>
+										<td>{{secondsToHMS(row.time)}}</td>
+										<td>{{getDescriptionType(row.type)}}</td>
+										<td>{{row.description}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+      				</div>
+    			</div>
 			</div>
 		</div>
 	</div>

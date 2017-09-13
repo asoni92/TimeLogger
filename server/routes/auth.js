@@ -5,4 +5,6 @@ module.exports = function (app) {
 
      app.post('/api/processRequest', loggerAPIController.populateUserIdAndProcessRequest);
      app.get('/api/getLoggerData', loggerAPIController.getLoggerData);
+     app.get('/api/getUserData', loggerAPIController.getUserData);
+     
 };

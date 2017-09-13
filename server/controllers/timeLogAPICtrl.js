@@ -524,9 +524,9 @@ module.exports = function(app) {
 		var startDate = moment().startOf('day').unix();
 		var endDate = moment().unix();
 		var queryData = [];
-		var query = 'active = 1';
+		var query = ' active = 1';
 		if(req.query.userId != null) {
-			query = query + ' and userId in ? ';
+			query = query + ' and userId in (?) ';
 			queryData.push(req.query.userId);
 		}
 		if(req.query.timePeriod != null) {
@@ -551,7 +551,7 @@ module.exports = function(app) {
 		}
 		schema.model('WorkLog').forge().query(function (qb) {
 			qb.whereRaw(query, queryData)
-		}).fetchAll().then(function (result) {
+		}).orderBy('type', 'ASC').fetchAll().then(function (result) {
 			if (result == null) {
 				result = [];
 			}
@@ -559,8 +559,30 @@ module.exports = function(app) {
 				"data": result.toJSON()
 			});
 		}).catch(function (err) {
+			console.log(err)
 			return res.status(500).send();
 		});
+	}
+	
+	/*   --------------------------------------Dashboard Controller-------------------------------------- */
+	controller.getUserData = function (req, res, next) {
+		schema.model('User').forge().where({
+			active: 1
+		}).fetchAll().then(function (data) {
+			if (data == null || data.length == 0) {
+				return res.send("No Registered User Found");
+			} else {
+				var models = data.models;
+				var data = data.toJSON();
+				for (var i = 0; i < models.length; i++) { 
+                    data[i].id = models[i].get('id');
+                }
+				return res.jsonp(data)
+			}
+		}).catch(function (err) {
+			console.log(err)
+			console.log("Error Occured");
+		})
 	}
 	
 	return controller;
